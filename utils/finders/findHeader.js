@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {INLINE_HEADER} from "../regex";
-
+import styles from '../../styles/Markdown.module.css'
 export function findInlineHeader (line) {
     let found = false
     let parsed = line
@@ -11,7 +11,7 @@ export function findInlineHeader (line) {
                 const split = parsed.split(INLINE_HEADER[k])
 
                 if (split.length > 1)
-                    parsed = `<h${k}>${split[1]}</h${k}>`
+                    parsed = `<h${k} class="${styles.header}">${split[1]}</h${k}>`
 
                 found = true
             }

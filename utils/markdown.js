@@ -17,17 +17,15 @@ const startParagraph = (line) => {
     return `<p class="${styles.paragraph}">${line}</p>`
 }
 
-export default function markdownParser(data) {
+export default function markdownParser(data, id) {
     const original = data.split('\n')
     let parsedData = []
     let fixedData = []
-
+    let [parsed, matches] = [undefined, undefined]
     try {
-        const split = findCode(findTag(data)).split('\n')
+        [parsed, matches] = findCode(findTag(data),id)
 
-
-
-        split.forEach((line, index) => {
+        parsed.split('\n').forEach((line, index) => {
             let newLine = findBold(line)
             newLine = findItalic(newLine)
 
@@ -38,7 +36,7 @@ export default function markdownParser(data) {
             newLine = findInlineHeader(newLine)
             if (beforeHeader === newLine)
                 newLine = findQuote(newLine)
-            newLine = findRule(index > 0 ? split[index - 1] : null, newLine, index < split.length - 1 ? split[index + 1] : null)
+            newLine = findRule(index > 0 ? parsed[index - 1] : null, newLine, index < parsed.length - 1 ? parsed[index + 1] : null)
 
             parsedData.push(newLine)
         })
@@ -47,7 +45,7 @@ export default function markdownParser(data) {
         parsedData = findTables(parsedData, data.split('\n'))
 
         parsedData.forEach(e => {
-            if (original.indexOf(e) > -1)
+            if (original.indexOf(e) > -1 && e.match(/(\S+)/g))
                 fixedData.push(startParagraph(e))
             else
                 fixedData.push(e)
@@ -60,5 +58,5 @@ export default function markdownParser(data) {
         console.log(e)
     }
 
-    return parsedData
+    return [parsedData, matches]
 }

@@ -36,19 +36,23 @@ function identifyType(str, clean) {
     }
 }
 
-export default function findCode(str) {
+export default function findCode(str, id) {
     const match = str.match(CODE_BLOCK.BASIC)
     let parsed = str
-
+    let matches = []
     if (match !== null)
-        match.forEach(e => {
+        match.forEach((e, i) => {
             let parsedBlock = identifyType(e, e.match(CODE_BLOCK.NOT_GLOBAL)[1])
             parsedBlock = parsedBlock.split('\n')
 
             parsedBlock = parsedBlock.map((p, i) => {
-                return `<span class="${styles.lineEnumeration}">${i}</span>${'&nbsp'.repeat(Math.ceil(parsedBlock.length * .1))}|${p}`
+                return `<button data-index="${i}" class="${styles.lineEnumeration}">${'&nbsp'.repeat(Math.ceil(parsedBlock.length * .1))}<span style="user-select: text">${p}</span></button>`
             })
-            parsed = parsed.replace(CODE_BLOCK.NOT_GLOBAL, `<section><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`)
+            matches.push(id + '-button-' + i)
+            parsed = parsed.replace(
+                CODE_BLOCK.NOT_GLOBAL,
+                `<section style="position: relative"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + '-button-' + i}" class="${styles.copyButton}"><span class="material-icons-round">copy</span></button><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`
+            )
         })
-    return parsed
+    return [parsed, matches]
 }

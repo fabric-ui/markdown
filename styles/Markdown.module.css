@@ -18,12 +18,13 @@
 }
 
 .wrapper > * {
-    font-family: "Roboto";
+    font-family: "Roboto" !important;
     max-width: 100%;
     width: 100%;
     overflow-x: hidden;
 
     margin: 0;
+
 
 }
 
@@ -37,9 +38,8 @@
 }
 
 .list {
-    font-family: "Roboto";
-    line-height: .7rem;
 
+    line-height: .7rem;
 }
 
 .listRow {
@@ -53,7 +53,7 @@
 }
 
 .paragraph {
-    font-family: "Roboto";
+
     width: 100%;
     max-width: 100%;
 
@@ -61,11 +61,11 @@
     word-wrap: break-word;
 
     margin: 0;
+
     font-size: .9rem;
 }
 
 .tableWrapper {
-    font-family: arial, sans-serif;
     border-collapse: collapse;
     max-width: 100%;
     overflow-x: hidden;
@@ -73,17 +73,45 @@
 }
 
 .tableRow:nth-child(even) {
-    background-color: #dddddd;
+    background-color: var(--mfc-background-secondary);
 }
 
 .tableContent {
-    border: 1px solid #dddddd;
+    border: 1px solid var(--mfc-border-secondary);
     text-align: left;
     padding: 8px;
 }
 
+.header {
+    margin: 0 0 0;
+    color: var(--mfc-color-primary);
+}
 
 /*CODE*/
+
+.code {
+    margin: 0;
+    font-family: Consolas, serif;
+    font-weight: normal;
+
+    position: relative;
+
+    font-size: 14px;
+    color: var(--mfc-color-secondary);
+    border-radius: 5px;
+    padding: 5px;
+    padding-right: 0;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /*tab-size: 1rem;*/
+
+    overflow: auto;
+    max-height: 35vh;
+    background: var(--mfc-background-secondary);
+    border: var(--mfc-border-secondary) 1px solid;
+
+}
 
 .tag {
     font-weight: bold;
@@ -92,7 +120,7 @@
 
 .attr {
     font-weight: normal;
-    color: var(--mfc-color-tertiary) ;
+    color: var(--mfc-color-tertiary);
 }
 
 .attrValue {
@@ -100,37 +128,98 @@
     font-weight: normal !important;
 }
 
-.code {
-    position: relative;
-
-    font-size: .85rem;
-    color: var(--mfc-color-secondary);
-    border-radius: 5px;
-    padding: 5px;
-
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    tab-size: 8;
-    overflow: auto;
-    max-height: 35vh;
-    background: var(--mfc-background-secondary);
-    border: var(--mfc-border-secondary) 1px solid;
-}
 
 .keyword {
-    font-weight: bolder;
+    font-weight: 600;
     color: #FF5500;
 }
-.domKeyword{
-    font-weight: bolder;
+
+.domKeyword {
+    font-weight: 600;
     color: #7209b7;
 }
-.strings{
+
+.strings {
     font-weight: bold;
     color: #6a994e !important;
 }
 
-.lineEnumeration{
+.lineEnumeration {
+
+    all: unset;
+    user-select: none;
+    position: relative;
+    width: 100%;
+}
+
+.lineEnumeration::after {
+    user-select: none;
+    content: attr(data-index);
     position: absolute;
+    left: 0;
+    color: var(--mfc-color-quaternary);
+}
+
+.lineEnumeration:hover::after, .lineEnumeration:focus::after {
+    color: var(--mfc-color-primary);
+}
+
+.lineEnumeration:focus {
+    outline: var(--mfc-border-secondary) 2px solid;
+}
+
+.copyButton {
+    position: absolute;
+
+    z-index: 5;
+    top: 8px;
+    right: 8px;
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 5px;
+
+    background: transparent;
+    border: var(--mfc-border-secondary) 1px solid;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 150ms linear;
+    color: var(--mfc-color-secondary);
+    cursor: pointer;
+}
+.copyButton:active{
+    background: var(--mfc-background-quaternary);
+    transform: scale(.98);
+}
+.copyButton:hover{
+    border-color: #0095ff;
+    color: #0095ff;
+}
+.copyButton > * {
+    font-size: 1.3rem !important;
+}
+
+.successButton{
+    border-color: #38b000;
+    color: #38b000;
+    outline: #38b000 1px solid;
+
+
+}
+.successButton::after{
+    content: 'Copied';
+    position: absolute;
+    z-index: 999;
+
+    left: -8px;
+    top: 50%;
+    transform: translate(-100%,-50%);
+    background: rgba(0,0,0,.75);
+    padding: 8px;
+    border-radius: 5px;
+    color: white;
+
 
 }
