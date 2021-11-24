@@ -1,3 +1,4 @@
+
 import React from 'react'
 
 export default function htmlParser(htmlText) {
@@ -18,7 +19,7 @@ export default function htmlParser(htmlText) {
       .replaceAll(/&lt;\/[a-zA-Z0-9]+&gt;/g, '<b style="color:#86128f;">$&</b>')
       // attr value
       .replaceAll(/\s[a-zA-Z0-9]+""[a-zA-Z0-9]+"/ig, '<span style="color: #007d07;">$&</span>')
-      
+
       // attr
       .replaceAll(/"[a-zA-Z0-9]+"/ig, '<span style="color: #007d07;">$&</span>')
 }

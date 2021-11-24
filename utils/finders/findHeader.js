@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {INLINE_HEADER} from "../regex";
 
 export function findInlineHeader (line) {

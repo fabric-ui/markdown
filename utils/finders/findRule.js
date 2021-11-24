@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {RULE_REGEX} from "../regex";
 import styles from "../../styles/Markdown.module.css";
 

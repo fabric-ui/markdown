@@ -1,3 +1,5 @@
+import React from 'react'
+
 import PropTypes from "prop-types";
 import styles from '../styles/Markdown.module.css'
 import {useMemo} from "react";

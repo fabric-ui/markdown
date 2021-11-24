@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {EXTERNAL_SOURCE_REGEX} from "../regex";
 
 export function findImage(line){

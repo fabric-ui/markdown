@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {BOLD_REGEX, ITALIC_REGEX} from "../regex";
 
 export function findBold (line) {
