@@ -6,9 +6,11 @@ import javascriptParser from "../parsers/javascript";
 import jsonParser from "../parsers/json";
 import consoleParser from "../parsers/console";
 import htmlParser from "../parsers/html";
+import findTag from "./findTag";
 
 function identifyType(str, clean) {
-    let parsedClean = clean.split('\n')
+    let parsedClean = findTag(clean)
+    parsedClean = parsedClean.split('\n')
     parsedClean = parsedClean.map(p => {
         return `&nbsp;${p}`
     })
@@ -40,19 +42,25 @@ export default function findCode(str, id) {
     const match = str.match(CODE_BLOCK.BASIC)
     let parsed = str
     let matches = []
+
     if (match !== null)
         match.forEach((e, i) => {
-            let parsedBlock = identifyType(e, e.match(CODE_BLOCK.NOT_GLOBAL)[1])
-            parsedBlock = parsedBlock.split('\n')
 
-            parsedBlock = parsedBlock.map((p, i) => {
-                return `<button data-index="${i}" class="${styles.lineEnumeration}">${'&nbsp'.repeat(Math.ceil(parsedBlock.length * .1))}<span style="user-select: text">${p}</span></button>`
-            })
-            matches.push(id + '-button-' + i)
-            parsed = parsed.replace(
-                CODE_BLOCK.NOT_GLOBAL,
-                `<section style="position: relative"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + '-button-' + i}" class="${styles.copyButton}"><span class="material-icons-round">copy</span></button><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`
-            )
+            const m = e.match(CODE_BLOCK.NOT_GLOBAL)
+            console.log(e, m)
+            if (m !== null) {
+                let parsedBlock = identifyType(e, m[2])
+                parsedBlock = parsedBlock.split('\n')
+
+                parsedBlock = parsedBlock.map((p, i) => {
+                    return `<button data-index="${i}" data-variant="code" class="${styles.lineEnumeration}">${'&nbsp'.repeat(Math.ceil(parsedBlock.length * .1))}<span style="user-select: text">${p}</span></button>`
+                })
+                matches.push(id + '-button-' + i)
+                parsed = parsed.replace(
+                    CODE_BLOCK.NOT_GLOBAL,
+                    `<section style="position: relative"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + '-button-' + i}" class="${styles.copyButton}"><span class="material-icons-round">copy</span></button><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`
+                )
+            }
         })
     return [parsed, matches]
 }

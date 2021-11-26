@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import PropTypes from "prop-types";
 import styles from '../styles/Markdown.module.css'
-import {useMemo} from "react";
 import markdownParser from "../utils/markdown";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 
@@ -49,13 +48,13 @@ export default function Markdown(props) {
     }
 
     useEffect(() => {
-        copyTo.forEach(element => {
+        copyTo?.forEach(element => {
             const ref = document.getElementById(element)
             if(ref)
                 ref.addEventListener('click', handleClick)
         })
         return () => {
-            copyTo.forEach(element => {
+            copyTo?.forEach(element => {
                 const ref = document.getElementById(element)
                 if(ref)
                     ref.removeEventListener('click', handleClick)

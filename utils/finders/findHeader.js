@@ -2,6 +2,7 @@ import React from 'react'
 
 import {INLINE_HEADER} from "../regex";
 import styles from '../../styles/Markdown.module.css'
+
 export function findInlineHeader (line) {
     let found = false
     let parsed = line

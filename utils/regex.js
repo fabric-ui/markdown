@@ -28,11 +28,11 @@ export const ITALIC_REGEX = [
 ]
 export const BOLD_REGEX = [
     {
-        baseRegex: /__[^_]*__/gi,
+        baseRegex: /__[._]*__/gi,
         divider: /__/gi
     },
     {
-        baseRegex: /\*\*[^*]*\*\*/gi,
+        baseRegex: /\*\*[.*]*\*\*/gi,
         divider: /\*\*/gi
     }
 ]
@@ -49,11 +49,13 @@ export const TABLE_REGEX = {
 }
 export const EXTERNAL_SOURCE_REGEX = {
     image: /!\[(.*)]\((.*)\)/i,
-    link: /((?!!).*)\[(.*)]\((.*)\)/i
+    link: /((?!!).*)\[(.*)]\((.*)\)/i,
+
+    linked_image: /\[!\[(.*)]\((.*)\)]\((.*)\)/i
 }
 export const CODE_BLOCK = {
-    BASIC: /^```(?:jsx|javascript|console|html|json|$)\n([\s\S]*?)```$/mg,
-    NOT_GLOBAL: /^```(?:jsx|javascript|console|html|json|$)\n([\s\S]*?)```$/m,
+    BASIC: /^```([a-zA-Z]*$)\n([\s\S]*?)```$/mg,
+    NOT_GLOBAL: /^```([a-zA-Z]*$)\n([\s\S]*?)```$/m,
     TYPES: {
         jsx: /^```jsx$\n([\s\S]*?)```$/m,
         javascript: /^```javascript\n([\s\S]*?)```$/m,
@@ -86,7 +88,13 @@ export const JSX_REGEX = {
     SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
     CLOSING_TAG: /&lt;(.+)\/&gt;/gim,
     STRING_ATTRIBUTE: /(\s*)([a-zA-Z]+)=&quot;([\s\S]*?)&quot;((\s)|&gt;)/igm,
-
     ATTRIBUTE: /(\s*)([a-zA-Z]+)={([\s\S]*?)}((\s+)|&gt;)/igm
+}
 
+export const HTML_REGEX = {
+    TAG:/<(.+)>/gim ,
+    SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
+    CLOSING_TAG: /&lt;(.+)\/&gt;/gim,
+    STRING_ATTRIBUTE: /(\s*)([a-zA-Z]+)=&quot;([\s\S]*?)&quot;((\s)|&gt;)/igm,
+    ATTRIBUTE: /(\s*)([a-zA-Z]+)={([\s\S]*?)}((\s+)|&gt;)/igm
 }
