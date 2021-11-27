@@ -3,7 +3,7 @@ import React from 'react'
 import {LIST_REGEX} from "../regex";
 import styles from "../../styles/Markdown.module.css";
 
-export function getType (e) {
+export function getType(e) {
     switch (true) {
         case e.match(LIST_REGEX.number) !== null:
             return 'number'
@@ -18,7 +18,7 @@ export function getType (e) {
     }
 }
 
-export default function findList (lines) {
+export default function findList(lines) {
 
     const getTag = (type) => {
         switch (type) {
@@ -49,7 +49,7 @@ export default function findList (lines) {
     let listLines = [], type, lastList, lastType
     lines.forEach((e, index) => {
         type = getType(e)
-        if(type === null ||  type !== lastType )
+        if (type === null || type !== lastType)
             lastList = undefined
         if (type !== null && e.match(LIST_REGEX.nested) === null) {
             lastType = type
@@ -80,7 +80,7 @@ export default function findList (lines) {
             if (parsedNested.length > 0)
                 parsedNested = `\n<${tag} class="${styles.nestedList}">${parsedNested.join('\n')}</${tag}>\n`
             // console.log(forwardLinked, found)
-            let str = `${forwardLinked === undefined || found.linkedTo === undefined? `<${tag} class="${styles.nestedList}">` : ''}<li class="${styles.listRow}">${found.line.replace(LIST_REGEX[found.type], '')}${parsedNested}</li>${forwardLinked === -1 ? `</${tag}>` : ''}`
+            let str = `${forwardLinked === undefined || found.linkedTo === undefined ? `<${tag} class="${styles.nestedList}">` : ''}<li class="${styles.listRow}">${found.line.replace(LIST_REGEX[found.type], '')}${parsedNested}</li>${forwardLinked === -1 ? `</${tag}>` : ''}`
 
             str.split('\n').forEach((s, sI) => {
                 parsed.push({
@@ -97,4 +97,37 @@ export default function findList (lines) {
 
 
     return newLines
+}
+
+export function newFindLists(str) {
+    const split = str.split('\n')
+
+    let lists = []
+    let currentType, currentList = [], startedOn
+    split.forEach((s, i) => {
+        const type = getType(s)
+        const isChild = ((currentType === type && currentType === 'number') || (currentType !== 'number' && type !== 'number'))
+        if ((type !== null && isChild) || (type !== null && currentType === undefined)) {
+            if (startedOn === undefined) {
+                startedOn = i
+                currentList.push(s)
+                currentType = type
+            } else
+                currentList.push(s)
+        } else {
+            if (currentList.length > 0)
+                lists.push({
+                    starts: startedOn,
+                    content: currentList.join('\n'),
+                    length: currentList.length,
+                    ends: startedOn + currentList.length
+                })
+            currentType = undefined
+            startedOn = undefined
+            currentList = []
+        }
+    })
+
+
+    return lists
 }

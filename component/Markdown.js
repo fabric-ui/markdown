@@ -18,16 +18,17 @@ export default function Markdown(props) {
     }, [])
 
     const [copyTo, setCopyTo] = useState([])
+
+    const copyToClipboard = useCopyToClipboard()
     const data = useMemo(() => {
         if (props.data !== undefined && props.data !== null) {
-            const [parsed, ids] = markdownParser(props.data, id)
+            const [parsed, ids] = new markdownParser(props.data, id)
             setCopyTo(ids)
+
             return parsed
         } else
             return ''
     }, [props.data])
-    const copyToClipboard = useCopyToClipboard()
-
 
     const handleClick = (event) => {
         const el = event.currentTarget.firstChild

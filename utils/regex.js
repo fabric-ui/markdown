@@ -9,12 +9,19 @@ export const LIST_REGEX = {
 }
 
 export const INLINE_HEADER = {
-    1: /^#\s/gi,
-    2: /^##\s/gi,
-    3: /^###\s/gi,
-    4: /^####\s/gi,
-    5: /^#####\s/gi,
-    6: /^######\s/gi
+    '1-IND': /(\s*?)#/gm,
+    '2-IND': /(\s*?)##/gm,
+    '3-IND': /(\s*?)###/gm,
+    '4-IND': /(\s*?)####/gm,
+    '5-IND': /(\s*?)#####/gm,
+    '6-IND': /(\s*?)######/gm,
+
+    1: /^(\s*?)#(.*)$/gm,
+    2: /^(\s*?)##(.*)$/gm,
+    3: /^(\s*?)###(.*)$/gm,
+    4: /^(\s*?)####(.*)$/gm,
+    5: /^(\s*?)#####(.*)$/gm,
+    6: /^(\s*?)######(.*)$/gm
 }
 export const ITALIC_REGEX = [
     {
@@ -37,15 +44,19 @@ export const BOLD_REGEX = [
     }
 ]
 export const RULE_REGEX = {
-    underline: /^_+$|^_$/gi,
-    base: /^-+$|^-$|^\*+$|^\*$|^_+$|^_$/gi,
-    emptyLine: /\S/g
+    // underline: /^_+$|^_$/gi,
+    // base: /^-+$|^-$|^\*+$|^\*$|^_+$|^_$/gi,
+    BASE: /^(-+|\*+|_+)$/mg,
+    EMPTY: /(?!\S)/g,
+    LINE_BEFORE: /(?!\S)([\r\n]|\n)^(-+|\*+|_+)(\s*)$/mg,
+    LINE_AFTER: /(\S+)$([\r\n]|\n)(^-+|^\*+|^_+)([\r\n]|\n)(?!\S)/gm,
+    LINE_ALONE: /(?!\S)([\r\n]|\n)(^-+|^\*+|^_+)([\r\n]|\n)(?!\S)/mg
 }
 
 export const TABLE_REGEX = {
-    allRows: /^\| (.*) \|| \| (.*) \|/gi,
-    contentRow: /\| ((?!-).*) \|| \| ((?!-).*) \|/gi,
-    divider: /\|(\s*)-+(\s*)\|(\s*)-+(\s*)\|/gi
+    // allRows: /^\|([^\S\r\n]*?)(.*)([^\S\r\n]*?)\||([^\S\r\n]*?)\|([^\S\r\n]*?)(.*)([^\S\r\n]*?)\|/gi,
+    CONTENT: /^([^\S\r\n]*?)\|([^\S\r\n]*?)(.*)([^\S\r\n]*?)\||([^\S\r\n]*?)\|([^\S\r\n]*?)(.*)([^\S\r\n]*?)\|/gi,
+    DIVIDER: /^([^\S\r\n]*?)\|([^\S\r\n]*?)(:?)(-+)(:?)([^\S\r\n]*?)\|([^\S\r\n]*?)(:?)(-+)(:?)([^\S\r\n]*?)\|/gi
 }
 export const EXTERNAL_SOURCE_REGEX = {
     image: /!\[(.*)]\((.*)\)/i,
@@ -54,16 +65,15 @@ export const EXTERNAL_SOURCE_REGEX = {
     linked_image: /\[!\[(.*)]\((.*)\)]\((.*)\)/i
 }
 export const CODE_BLOCK = {
-    BASIC: /^```([a-zA-Z]*$)\n([\s\S]*?)```$/mg,
-    NOT_GLOBAL: /^```([a-zA-Z]*$)\n([\s\S]*?)```$/m,
+    BASIC: /^```([^\S\r\n]*?)([a-zA-Z]*$)([\r\n]|\n)([\s\S]*?)```$/mg,
+    NOT_GLOBAL: /^```([^\S\r\n]*?)([a-zA-Z]*$)([\r\n]|\n)([\s\S]*?)```$/m,
     TYPES: {
-        jsx: /^```jsx$\n([\s\S]*?)```$/m,
-        javascript: /^```javascript\n([\s\S]*?)```$/m,
-        json: /^```json\n([\s\S]*?)```$/m,
-        html: /^```html\n([\s\S]*?)```$/m,
-        console: /^```console\n([\s\S]*?)```$/m
+        javascript: /^```([^\S\r\n]*?)(javascript|jsx|js)([\r\n]|\n)([\s\S]*?)```$/m,
+        json: /^```([^\S\r\n]*?)json([\r\n]|\n)([\s\S]*?)```$/m,
+        html: /^```([^\S\r\n]*?)html([\r\n]|\n)([\s\S]*?)```$/m,
+        console: /^```([^\S\r\n]*?)console\n([\s\S]*?)```$/m
     },
-    REPLACED:/^<section class="(.+)">\n<pre>([\s\S]*?)<\/pre>\n<\/section>/gmi,
+    REPLACED: /^<section class="(.+)">\n<pre>([\s\S]*?)<\/pre>\n<\/section>/gmi,
     WHITE_SPACE: /^(\s+)/gmi,
     KEYWORDS: [
         /^&nbsp;(\s*)import(\s*)/g,
@@ -84,7 +94,7 @@ export const CODE_BLOCK = {
     OBJECT: /{([\s\S]*?)}/
 }
 export const JSX_REGEX = {
-    TAG:/&lt;(.+)&gt;/gim ,
+    TAG: /&lt;(.+)&gt;/gim,
     SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
     CLOSING_TAG: /&lt;(.+)\/&gt;/gim,
     STRING_ATTRIBUTE: /(\s*)([a-zA-Z]+)=&quot;([\s\S]*?)&quot;((\s)|&gt;)/igm,
@@ -92,9 +102,13 @@ export const JSX_REGEX = {
 }
 
 export const HTML_REGEX = {
-    TAG:/<(.+)>/gim ,
+    TAG: /<(.+)>/gim,
     SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
     CLOSING_TAG: /&lt;(.+)\/&gt;/gim,
     STRING_ATTRIBUTE: /(\s*)([a-zA-Z]+)=&quot;([\s\S]*?)&quot;((\s)|&gt;)/igm,
     ATTRIBUTE: /(\s*)([a-zA-Z]+)={([\s\S]*?)}((\s+)|&gt;)/igm
+}
+
+export const QUOTE_REGEX = {
+    BASE: /^>(\s*)/gm
 }

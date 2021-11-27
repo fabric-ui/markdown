@@ -1,15 +1,19 @@
 import React from 'react'
 import styles from '../styles/Markdown.module.css'
-import findList from "./finders/findList";
-import findQuote from "./finders/findQuote";
+import {newFindLists} from "./finders/findList";
+import {newFindQuotes} from "./finders/findQuote";
 import {findBold, findItalic} from "./finders/findTypeface";
 import {findInlineHeader} from "./finders/findHeader";
-import {findRule} from "./finders/findRule";
-import findTables from "./finders/findTable";
+import {newFindRules} from "./finders/findRule";
+import {newFindTables} from "./finders/findTable";
 import {findImage, findLink, findLinkedImage} from "./finders/findExternalSource";
-import findCode from "./finders/findCode";
-import findTag from "./finders/findTag";
-import {CODE_BLOCK, HTML_REGEX, JSX_REGEX, RULE_REGEX} from "./regex";
+import {newFindCode} from "./finders/findCode";
+import removeParts from "./removeParts";
+import parseCode from "./parsers/parseCode";
+import parseHeader from "./parsers/parseHeader";
+import {CODE_BLOCK} from "./regex";
+import parseTable from "./parsers/parseTable";
+import parseList from "./parsers/parseList";
 
 
 const startParagraph = (line) => {
@@ -17,53 +21,87 @@ const startParagraph = (line) => {
 }
 
 export default function markdownParser(data, id) {
-    const original = data.split('\n')
-
-    let parsedData = []
-    let fixedData = []
-    let [parsed, matches] = [undefined, undefined]
+    let matches = []
+    let string = data, linesRemoved = 0
     try {
-        [parsed, matches] = findCode(data,id)
+        const codes = newFindCode(string)
 
-        parsed.split('\n').forEach((line, index) => {
-            let newLine = findBold(line)
-            newLine = findItalic(newLine)
-
-            newLine = findLinkedImage(newLine)
-            newLine = findImage(newLine)
-            const b = newLine
-            newLine = findLink(newLine)
-
-            const beforeHeader = newLine
-            newLine = findInlineHeader(newLine)
-            if (beforeHeader === newLine)
-                newLine = findQuote(newLine)
-            newLine = findRule(index > 0 ? parsed[index - 1] : null, newLine, index < parsed.length - 1 ? parsed[index + 1] : null)
+        const removedCode = removeParts(codes, string, linesRemoved, id, 'code')
+        string = removedCode[0]
+        linesRemoved = removedCode[1]
 
 
-            if(newLine.match(RULE_REGEX.emptyLine) !== null && newLine.indexOf('data-variant="code"') === -1)
-                newLine = startParagraph(newLine)
-            // newLine.match(HTML_REGEX.TAG) === null
-            parsedData.push(newLine)
+        const rules = newFindRules(string)
+        const removedRule = removeParts(rules, string, linesRemoved, id, 'rule')
+        string = removedRule[0]
+        linesRemoved = removedRule[1]
 
-        })
+        console.log(string)
+        const tables = newFindTables(string)
+        const removedTable = removeParts(tables, string, linesRemoved, id, 'table')
+        string = removedTable[0]
+        linesRemoved = removedTable[1]
 
-        parsedData = findList(parsedData, data.split('\n'))
-        parsedData = findTables(parsedData, data.split('\n'))
+        const lists = newFindLists(string)
+        const removedList = removeParts(lists, string, linesRemoved, id, 'list')
+        string = removedList[0]
+        linesRemoved = removedList[1]
 
-        parsedData.forEach(e => {
-            // if (original.indexOf(e) > -1 && e.match(/(\S+)/g))
-            //     fixedData.push(startParagraph(e))
-            // else
-                fixedData.push(e)
-        })
+        // const quotes = newFindQuotes(string)
+        // const removedQuote = removeParts(quotes, string, linesRemoved, id, 'quote')
+        // string = removedQuote[0]
+        // linesRemoved = removedQuote[1]
 
-        parsedData =fixedData.join('\n')
+        const headers = findInlineHeader(string)
+        const removedHeader = removeParts(headers, string, linesRemoved, id, 'header')
+        string = removedHeader[0]
 
+
+        string = string.split('\n').map(line => {
+            let parsed = line
+            if(!line.includes(id)){
+                parsed = findLinkedImage(parsed)
+                parsed = findImage(parsed)
+                parsed = findLink(parsed)
+                parsed = findBold(parsed)
+                parsed = findItalic(parsed)
+
+
+                parsed = startParagraph(parsed)
+            }
+            else{
+                const type = line.split('-')[1]
+                const index = parseInt(line.split('-')[2].replace('}', ''))
+                if(!isNaN(index))
+                    switch (type){
+                        case 'code':{
+                            const [p, bID] = parseCode(codes[index], index, id)
+                            parsed = p
+                            matches.push(bID)
+                            break
+                        }
+                        case 'list':{
+                            // parsed = parseList(lists[index])
+                            break
+                        }
+                        case 'table':{
+                            // parsed = parseTable(tables[index])
+                            break
+                        }
+                        case 'header':{
+                            // parsed = parseHeader(headers[index])
+                            break
+                        }
+                        default:
+                            break
+                    }
+            }
+            return parsed
+        }).join('\n')
 
     } catch (e) {
         console.log(e)
     }
     // console.log(data)
-    return [parsedData, matches]
+    return [string, matches]
 }

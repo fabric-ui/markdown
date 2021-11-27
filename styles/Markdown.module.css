@@ -193,6 +193,7 @@
     user-select: none;
     content: attr(data-index);
     position: absolute;
+    top: 0;
     left: 0;
     color: var(--color-quaternary);
 }

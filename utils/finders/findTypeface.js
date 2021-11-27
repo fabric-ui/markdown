@@ -38,3 +38,4 @@ export function findItalic (line) {
     }
     return parsed.replaceAll('<i></i>', '')
 }
+

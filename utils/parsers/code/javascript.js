@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../../styles/Markdown.module.css'
-import {CODE_BLOCK, JSX_REGEX} from "../regex";
+import styles from '../../../styles/Markdown.module.css'
+import {CODE_BLOCK, JSX_REGEX} from "../../regex";
 
 function parseObject(attr) {
     let parsed = attr, match = attr.match(CODE_BLOCK.OBJECT)

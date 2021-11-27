@@ -2,53 +2,44 @@ import React from 'react'
 
 import {TABLE_REGEX} from "../regex";
 import styles from '../../styles/Markdown.module.css'
+import findIndex from "../findIndex";
 
-const removeLimiters = (str) => {
-    return str.split('| ').filter(s => s !== '| ').join('').split(' |').filter(s => s !== ' |').join('')
-}
-export default function findTables(lines) {
-    let headers = []
-    let columns = []
-    let listStarted, columnsStarted
+
+export function newFindTables(str) {
+    let lastWasRow = false
     let tables = []
-    lines.forEach((l, index) => {
-        if (index < (lines.length - 1) && l.match(TABLE_REGEX.contentRow) !== null && lines[index + 1].match(TABLE_REGEX.divider) !== null) {
-            listStarted = index
-            headers.push(l)
-            columnsStarted = index + 1
-        } else if (index < lines.length - 1 && columnsStarted !== undefined && index >= columnsStarted && l.match(TABLE_REGEX.contentRow) !== null)
-            columns.push(l)
-        else if ((l.match(TABLE_REGEX.divider) === null || index === lines.length - 1) && listStarted !== undefined) {
-            if (index === lines.length - 1)
-                columns.push(l)
-            tables.push({
-                startsOn: listStarted,
-                headers: headers,
-                columns: columns
-            })
+    const split = str.split('\n')
+    let indexes = []
+    let currentTable = []
 
-            headers = []
-            columns = []
-            listStarted = undefined
-            columnsStarted = undefined
-        }
+    let dividerFound = false
+
+    split.forEach(l => {
+        if (l.match(TABLE_REGEX.CONTENT) !== null) {
+            if(!dividerFound){
+                dividerFound = l.match(TABLE_REGEX.DIVIDER) !== null
+            }
+
+            currentTable.push(l)
+            lastWasRow = true
+        } else if (currentTable.length > 0) {
+            tables.push(currentTable.join('\n'))
+            currentTable = []
+            lastWasRow = false
+        } else
+            lastWasRow = false
     })
-    let parsedLines = [...lines]
-    let linesRemoved = 0
+
     tables.forEach(t => {
-        const tableLength = (t.columns.length + t.headers.length) + 1
-
-        let splitColumns = t.columns.map(c => c.split(' | '))
-        splitColumns = splitColumns.map(c => `<tr class="${styles.tableRow}">${c.map(cc => `<td class="${styles.tableContent}">${removeLimiters(cc)}</td>`).join('')}</tr>`).join('')
-
-        let splitHeaders = t.headers.map(c => c.split(' | '))
-        splitHeaders = splitHeaders.map(c => `<tr class="${styles.tableRow}">${c.map(cc => `<th class="${styles.tableContent}">${removeLimiters(cc)}</th>`).join('')}</tr>`).join('')
-
-        parsedLines.splice(t.startsOn - linesRemoved, tableLength)
-        linesRemoved += tableLength
-
-        parsedLines[t.startsOn] = `<table class="${styles.tableWrapper}">${splitHeaders}\n${splitColumns}</table>`
+        const index = findIndex(str, t)
+        console.log(index, index.start + t.split('\n').length )
+        indexes.push({
+            starts: index.start,
+            ends: index.end,
+            content: t,
+            length:t.split('\n').length -1
+        })
     })
-    // console.log(parsedLines.join('\n'))
-    return parsedLines
+
+    return indexes
 }
