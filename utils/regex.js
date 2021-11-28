@@ -16,33 +16,35 @@ export const INLINE_HEADER = {
     '5-IND': /(\s*?)#####/gm,
     '6-IND': /(\s*?)######/gm,
 
-    1: /^(\s*?)#(.*)$/gm,
-    2: /^(\s*?)##(.*)$/gm,
-    3: /^(\s*?)###(.*)$/gm,
-    4: /^(\s*?)####(.*)$/gm,
-    5: /^(\s*?)#####(.*)$/gm,
-    6: /^(\s*?)######(.*)$/gm
+    1: /^([^\S\r\n]*?)#(?!#.*)/gm,
+    2: /^([^\S\r\n]*?)##(?!#.*)/gm,
+    3: /^([^\S\r\n]*?)###(?!#.*)/gm,
+    4: /^([^\S\r\n]*?)####(?!#.*)/gm,
+    5: /^([^\S\r\n]*?)#####(?!#.*)/gm,
+    6: /^([^\S\r\n]*?)######(?!#.*)/gm
 }
-export const ITALIC_REGEX = [
-    {
-        baseRegex: /((\s+)|^)_[^_]*_/gi,
-        divider: /_/gi
-    },
-    {
-        baseRegex: /\*[^*]*\*/gi,
-        divider: /\*/gi
-    }
-]
-export const BOLD_REGEX = [
-    {
-        baseRegex: /__[._]*__/gi,
-        divider: /__/gi
-    },
-    {
-        baseRegex: /\*\*[.*]*\*\*/gi,
-        divider: /\*\*/gi
-    }
-]
+export const ITALIC_REGEX = {
+    BASE_UNDERLINE: /_(.+)_/gm,
+    UNDERLINE: /_(.+)_/m,
+
+    BASE_ASTERISK: /\*(.+)\*/gm,
+    ASTERISK: /\*(.+)\*/m
+}
+export const BOLD_REGEX = {
+    BASE_UNDERLINE: /__(.+)__/gm,
+    UNDERLINE: /__(.+)__/m,
+
+    BASE_ASTERISK: /\*\*(.+)\*\*/gm,
+    ASTERISK: /\*\*(.+)\*\*/m
+}
+export const STRIKETHROUGH = {
+    BASE: /~~(.+)~~/gm,
+    NOT_GLOBAL: /~~(.+)~~/m,
+}
+export const INLINE_CODE_REGEX={
+    BASE: /`(.+?)`/g,
+    NOT_GLOBAL: /`(.+?)`/,
+}
 export const RULE_REGEX = {
     // underline: /^_+$|^_$/gi,
     // base: /^-+$|^-$|^\*+$|^\*$|^_+$|^_$/gi,

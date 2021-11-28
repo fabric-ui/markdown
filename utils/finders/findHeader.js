@@ -12,7 +12,7 @@ export function findInlineHeader(str) {
                 headers.push({
                     starts: i,
                     ends: i + 1,
-                    length: 1,
+                    length: 0,
                     content: s,
                     variant: k
                 })

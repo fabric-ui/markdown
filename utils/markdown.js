@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/Markdown.module.css'
 import {newFindLists} from "./finders/findList";
 import {newFindQuotes} from "./finders/findQuote";
-import {findBold, findItalic} from "./finders/findTypeface";
+import {findTypeface} from "./finders/findTypeface";
 import {findInlineHeader} from "./finders/findHeader";
 import {newFindRules} from "./finders/findRule";
 import {newFindTables} from "./finders/findTable";
@@ -11,9 +11,10 @@ import {newFindCode} from "./finders/findCode";
 import removeParts from "./removeParts";
 import parseCode from "./parsers/parseCode";
 import parseHeader from "./parsers/parseHeader";
-import {CODE_BLOCK} from "./regex";
 import parseTable from "./parsers/parseTable";
 import parseList from "./parsers/parseList";
+import parseQuote from "./parsers/parseQuote";
+import parseRule from "./parsers/parseRule";
 
 
 const startParagraph = (line) => {
@@ -21,87 +22,133 @@ const startParagraph = (line) => {
 }
 
 export default function markdownParser(data, id) {
-    let matches = []
-    let string = data, linesRemoved = 0
+    let string = data,  parsed = [], matches = []
     try {
-        const codes = newFindCode(string)
+        const headers = findInlineHeader(data)
+        string = removeParts(headers, string, id, 'header')
+        
+        const codes = newFindCode(data)
+        string = removeParts(codes, string, id, 'code')
 
-        const removedCode = removeParts(codes, string, linesRemoved, id, 'code')
-        string = removedCode[0]
-        linesRemoved = removedCode[1]
+        const rules = newFindRules(data)
+        string = removeParts(rules, string, id, 'rule')
 
+        const tables = newFindTables(data)
+        string = removeParts(tables, string, id, 'table')
 
-        const rules = newFindRules(string)
-        const removedRule = removeParts(rules, string, linesRemoved, id, 'rule')
-        string = removedRule[0]
-        linesRemoved = removedRule[1]
+        const lists = newFindLists(data)
+        string = removeParts(lists, string, id, 'list')
 
-        console.log(string)
-        const tables = newFindTables(string)
-        const removedTable = removeParts(tables, string, linesRemoved, id, 'table')
-        string = removedTable[0]
-        linesRemoved = removedTable[1]
+        const quotes = newFindQuotes(data)
+        string = removeParts(quotes, string, id, 'quote')
 
-        const lists = newFindLists(string)
-        const removedList = removeParts(lists, string, linesRemoved, id, 'list')
-        string = removedList[0]
-        linesRemoved = removedList[1]
+        string.split('\n').forEach((line, index) => {
+            if(!line.includes(id))
+                parsed.push({
+                    starts: index,
+                    ends: index + 1,
+                    content: line,
+                    type: line.includes(`&custom-empty;`) ? 'empty' : 'line'
+                })
 
-        // const quotes = newFindQuotes(string)
-        // const removedQuote = removeParts(quotes, string, linesRemoved, id, 'quote')
-        // string = removedQuote[0]
-        // linesRemoved = removedQuote[1]
-
-        const headers = findInlineHeader(string)
-        const removedHeader = removeParts(headers, string, linesRemoved, id, 'header')
-        string = removedHeader[0]
-
-
-        string = string.split('\n').map(line => {
-            let parsed = line
-            if(!line.includes(id)){
-                parsed = findLinkedImage(parsed)
-                parsed = findImage(parsed)
-                parsed = findLink(parsed)
-                parsed = findBold(parsed)
-                parsed = findItalic(parsed)
-
-
-                parsed = startParagraph(parsed)
-            }
             else{
                 const type = line.split('-')[1]
                 const index = parseInt(line.split('-')[2].replace('}', ''))
                 if(!isNaN(index))
                     switch (type){
                         case 'code':{
-                            const [p, bID] = parseCode(codes[index], index, id)
-                            parsed = p
-                            matches.push(bID)
+                            parsed.push({...codes[index], type: 'code', index: index})
                             break
                         }
                         case 'list':{
-                            // parsed = parseList(lists[index])
+                            parsed.push({...lists[index], type: 'list'})
                             break
                         }
                         case 'table':{
-                            // parsed = parseTable(tables[index])
+                            parsed.push({...tables[index], type: 'table'})
+                            break
+                        }
+                        case 'rule':{
+                            parsed.push({...rules[index], type: 'rule'})
                             break
                         }
                         case 'header':{
-                            // parsed = parseHeader(headers[index])
+                            parsed.push({...headers[index], type: 'header'})
+                            break
+                        }
+                        case 'quote':{
+                            parsed.push({...quotes[index], type: 'quote'})
                             break
                         }
                         default:
+                            console.log('ON DEFAULT')
                             break
                     }
             }
             return parsed
-        }).join('\n')
+        })
+
+        parsed = parsed.map(p => {
+            let parsedLine
+            switch (p.type){
+                case 'code':{
+                    const [d, bID] = parseCode(p, p.index, id)
+                    parsedLine = d
+                    matches.push(bID)
+                    break
+                }
+                case 'list':{
+                    parsedLine = parseList(p)
+
+                    parsedLine = findTypeface(parsedLine)
+
+                    parsedLine = findLinkedImage(parsedLine)
+                    parsedLine = findImage(parsedLine)
+                    parsedLine = findLink(parsedLine)
+                    break
+                }
+                case 'table':{
+                    parsedLine = parseTable(p)
+                    break
+                }
+                case 'header':{
+                    parsedLine = parseHeader(p)
+
+                    parsedLine = findTypeface(parsedLine)
+                    parsedLine = findLink(parsedLine)
+
+                    break
+                }
+                case 'rule':{
+                    parsedLine = parseRule(p)
+                    break
+                }
+                case 'quote':{
+                    parsedLine = parseQuote(p)
+                    break
+                }
+                case 'line': {
+                    parsedLine = p.content
+
+                    parsedLine = findTypeface(parsedLine)
+
+                    parsedLine = findLinkedImage(parsedLine)
+                    parsedLine = findImage(parsedLine)
+                    parsedLine = findLink(parsedLine)
+                    parsedLine = startParagraph(parsedLine)
+                    break
+                }
+                default: {
+                    parsedLine = ''
+                    break
+                }
+            }
+            return parsedLine
+        })
 
     } catch (e) {
         console.log(e)
     }
     // console.log(data)
-    return [string, matches]
+    return [parsed.join('\n'), matches]
 }

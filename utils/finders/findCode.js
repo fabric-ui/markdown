@@ -10,11 +10,11 @@ export function newFindCode(str) {
         match.forEach(m => {
 
             const indexes = findIndex(str, m)
-            // console.log(indexes, indexes.start + m.split('\n').length)
+
             matches.push({
                 starts: indexes.start,
-                ends: indexes.start + m.split('\n').length - 2,
-                length: m.split('\n').length,
+                ends: indexes.start + m.split('\n').length,
+                length: m.split('\n').length -1,
                 content: m
             })
         })

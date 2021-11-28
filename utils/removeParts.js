@@ -1,16 +1,10 @@
-export default function removeParts(toRemove, str, removed = 0, id, type) {
+export default function removeParts(toRemove, str, id, type) {
     const split = str.split('\n')
-
-    let linesRemoved = 0
-    // console.log(split.length)
     toRemove.forEach((t, i) => {
-
-        split.splice(t.starts - linesRemoved, t.length)
         split[t.starts] = `{${id}-${type}-${i}}`
-
-        linesRemoved += t.length
+        for(let i = 0; i < t.length+1 ; i++){
+            split[t.starts + i + (i === 0 ? 1 : 0)] = `&custom-empty;`
+        }
     })
-
-
-    return [split.join('\n'), linesRemoved]
+    return split.join('\n')
 }
