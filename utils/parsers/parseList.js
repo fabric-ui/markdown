@@ -1,6 +1,7 @@
 import {LIST_REGEX} from "../regex";
+import styles from '../../styles/Markdown.module.css'
 
-function getTag (type) {
+function getTag(type) {
     switch (type) {
         case 'number':
             return 'ol'
@@ -23,19 +24,20 @@ function getType(e) {
             return null
     }
 }
-export default function parseList(block){
+
+export default function parseList(block) {
     const split = block.content.split('\n')
+    let tag
     let list = []
     split.forEach(s => {
         const match = s.match(/^(\s+)/g)
 
-        if(match !== null) {
+        if (match !== null) {
             list.push({
                 nestingLevel: Math.round(match[0].length / 3),
                 content: s
             })
-        }
-        else
+        } else
             list.push({
                 nestingLevel: 0,
                 content: s
@@ -43,15 +45,20 @@ export default function parseList(block){
     })
 
     list = list.map((l) => {
+
+
         const type = getType(l.content)
-        const tag = getTag(type)
-        let content = `<li>${l.content.replace(LIST_REGEX[type], '')}</li>`
-        for(let i = 0; i < l.nestingLevel; i++){
-            content = `<${tag}>${content}</${tag}>`
+
+        if(tag === undefined)
+            tag = tag = getTag(type)
+
+        let content = `<li class="${styles.listRow}">${l.content.replace(LIST_REGEX[type], '')}</li>`
+        for (let i = 0; i < l.nestingLevel; i++) {
+            content = `<${tag} class="${styles.list}">${content}</${tag}>`
         }
 
         return content
     })
 
-    return `<ul>${list.join('\n')}</ul>`
+    return `<${tag} class="${styles.list}">${list.join('\n')}</${tag}>`
 }

@@ -8,7 +8,7 @@ export function findInlineHeader(str) {
     split.forEach((s, i) => {
         let found = false
         Object.keys(INLINE_HEADER).forEach(k => {
-            if (s.match(INLINE_HEADER[k]) !== null && !found) {
+            if (!k.toString().includes('-IND') && s.match(INLINE_HEADER[k]) !== null && !found) {
                 headers.push({
                     starts: i,
                     ends: i + 1,

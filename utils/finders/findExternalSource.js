@@ -3,6 +3,52 @@ import React from 'react'
 import {EXTERNAL_SOURCE_REGEX} from "../regex";
 import styles from '../../styles/Markdown.module.css'
 
+export default function parseExternalSource(dataBlock){
+    const split = dataBlock.split('\n')
+    let parsed = []
+    split.forEach((line)=>{
+        let currentLine = line
+        let match = currentLine.match(EXTERNAL_SOURCE_REGEX.linked_image)
+        if (match !== null) {
+
+            const alt = match[1]
+            const href = match[3]
+            const src = match[2]
+            currentLine = currentLine.replace(EXTERNAL_SOURCE_REGEX.link, `<a class="${styles.link}" href="${href}"><img class="${styles.image}" src="${src}" alt="${alt}"/></a>`)
+        }
+
+        match = currentLine.match(EXTERNAL_SOURCE_REGEX.image)
+        if (match !== null) {
+            const alt = match[1]
+            const src = match[2]
+            currentLine = currentLine.replace(`![${alt}](${src})`, `<img class="${styles.image}" src="${src}" alt="${alt}"/>`)
+
+        }
+
+        match = currentLine.match(EXTERNAL_SOURCE_REGEX.link)
+        if (match !== null) {
+            const alt = match[2]
+            let href = match[3]
+            const splitHref = href.split(' ')
+            let title
+            if (splitHref.length > 1)
+                title = splitHref.splice(1, 2).join(' ')
+
+            currentLine = currentLine.replace(`[${alt}](${href})`, `<a ${title !== undefined ? `title=${title}` : ''} class="${styles.link}"  href="${splitHref[0]}">${alt}</a>`)
+
+            currentLine = findLink(currentLine)
+        }
+
+        parsed.push(currentLine)
+    })
+
+
+
+
+    return parsed.join('\n')
+}
+
+
 
 export function findImage(line) {
     let parsed = line
@@ -10,7 +56,7 @@ export function findImage(line) {
     if (match !== null) {
         const alt = match[1]
         const src = match[2]
-        parsed = parsed.replace(`![${alt}](${src})`, `<img  src="${src}" alt="${alt}"/>`)
+        parsed = parsed.replace(`![${alt}](${src})`, `<img class="${styles.image}" src="${src}" alt="${alt}"/>`)
 
     }
 

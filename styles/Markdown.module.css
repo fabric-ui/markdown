@@ -13,10 +13,6 @@
     --color-senary: white;
     --box-shadow-primary: #e0e0e0;
 
-    /*display: grid;*/
-    /*align-items: flex-start;*/
-    /*align-content: flex-start;*/
-
 }
 
 .quote {
@@ -68,13 +64,17 @@
 }
 
 .list {
-
-    line-height: .7rem;
+    line-height: 1rem;
+    overflow: visible;
+    /*padding: 0;*/
+    /*line-height: .7rem;*/
 }
 
 .listRow {
-    font-size: .9rem;
-    color: var(--color-primary);
+    /*font-size: .9rem;*/
+    /*color: var(--color-primary);*/
+
+    /*margin: 0;*/
 }
 
 .nestedList .listRow {
@@ -83,19 +83,24 @@
 }
 
 .paragraph {
-    width: 100%;
-    text-align: left;
+
     display: inline-block;
-    /*width: fit-content;*/
+
     max-width: 100%;
+    /*display: flex;*/
 
     white-space: pre-wrap;
     word-wrap: break-word;
-    margin: .5rem .5rem .25rem;
+    margin: 0 0 1rem;
     /*padding: 0;*/
 
     font-size: .9rem;
 
+}
+
+.image {
+    width: fit-content;
+    height: fit-content;
 
 }
 
@@ -118,12 +123,27 @@
 }
 
 .header {
+
     width: 100%;
-    text-align: left;
+    position: relative;
     color: var(--color-primary);
+    overflow: visible;
+}
+
+.header[data-variant='1']::after, .header[data-variant='2']::after{
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+
+    background-color: var(--border-secondary);
+
 }
 
 .link {
+
     text-decoration: none;
     color: #0095ff;
     font-weight: bold;

@@ -32,7 +32,7 @@ export function newFindTables(str) {
 
     tables.forEach(t => {
         const index = findIndex(str, t)
-            console.log(index, t.split('\n').length)
+
         indexes.push({
             starts: index.start,
             ends: index.end,

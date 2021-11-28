@@ -63,7 +63,7 @@ export default function Markdown(props) {
         }
     }, [copyTo])
     return (
-        <pre className={styles.wrapper} dangerouslySetInnerHTML={{__html: data}}/>
+        <article className={styles.wrapper} dangerouslySetInnerHTML={{__html: data}}/>
     )
 }
 

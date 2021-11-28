@@ -1,38 +1,56 @@
+import styles from "../../styles/Markdown.module.css";
+import {HTML_REGEX, RULE_REGEX} from "../regex";
+
+const startParagraph = (line) => {
+    return `<p class="${styles.paragraph}">${line}</p>`
+}
+
 export default function findParagraph(parsedData) {
     let parsed = []
     let lastWasP = false, currentP = [], startedOn
-    console.log(parsedData.length)
-    parsedData.forEach((s, i) => {
-        console.log(s.type)
-        if (s.type === 'line') {
 
+    parsedData.forEach((s, i) => {
+
+        if (s.type === 'line' || s.type === 'empty') {
             if (startedOn === undefined) {
-                startedOn = i
+                startedOn = s.starts
             }
-            if (lastWasP)
-                currentP.push(s.content)
-            else {
-                currentP.push(s.content)
-                lastWasP = true
+            if (!s.content.includes('&custom-empty;') && s.content.trim().length > 0) {
+                const content = s.content.match(HTML_REGEX.TAG) === null ? startParagraph(s.content) : s.content
+                if (lastWasP)
+                    currentP.push(content)
+                else {
+                    currentP.push(content)
+                    lastWasP = true
+                }
             }
-        } else {
-            console.log(currentP)
+        } else if (s.content.trim().length > 0) {
             lastWasP = false
-            if (currentP.length > 0)
+            if (currentP.length > 0) {
                 parsed.push({
                     starts: startedOn,
-                    content: currentP.join('\n'),
+                    content: startParagraph(currentP.join('\n')),
                     length: 0,
-                    ends: startedOn + currentP.length - 1,
                     type: 'line'
                 })
-            currentP = []
+            }
+
             parsed.push(s)
+            currentP = []
+
             startedOn = undefined
         }
+
     })
-    console.log(parsed)
-    // parsed = parsed.filter(p => p.starts)
+
+    if (currentP.length > 0) {
+        parsed.push({
+            starts: startedOn,
+            content: startParagraph(currentP.join('\n')),
+            length: 0,
+            type: 'line'
+        })
+    }
 
     return parsed
 }
