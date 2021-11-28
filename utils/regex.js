@@ -30,6 +30,13 @@ export const ITALIC_REGEX = {
     BASE_ASTERISK: /\*(.+)\*/gs,
     ASTERISK: /\*(.+)\*/
 }
+// export const BOLD_ITALIC_REGEX = {
+//     BASE_UNDERLINE: /___(.+)___/gm,
+//     UNDERLINE: /(?!<.*)___(.+)___/,
+//
+//     BASE_ASTERISK: /\*\*\*(.+)\*\*\*/g,
+//     ASTERISK: /\*\*\*(.+)\*\*\*/
+// }
 export const BOLD_REGEX = {
     BASE_UNDERLINE: /__(.+)__/gs,
     UNDERLINE: /__(.+)__/s,
@@ -62,7 +69,7 @@ export const TABLE_REGEX = {
 }
 export const EXTERNAL_SOURCE_REGEX = {
     image: /!\[(.*)]\((.*)\)/i,
-    link: /((?!!).*)\[(.*)]\((.*)\)/i,
+    link: /((?!!).*)\[(.*)]\((.*?)\)/i,
 
     linked_image: /\[!\[(.*)]\((.*)\)]\((.*)\)/i
 }
@@ -104,12 +111,14 @@ export const JSX_REGEX = {
 }
 
 export const HTML_REGEX = {
-    TAG: /<(.+)>/gim,
-    SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
-    CLOSING_TAG: /&lt;(.+)\/&gt;/gim,
+    TAG: /<([a-zA-Z]+)((([^\S\r\n]+)(.*?))|)>/g,
+    // SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
+    CLOSING_TAG: /<\/([a-zA-Z]+)([^\S\r\n]*?)>/g,
+    IMAGE_TAG: /<img((([^\S\r\n]+)(.*?))|)>/g,
     STRING_ATTRIBUTE: /(\s*)([a-zA-Z]+)=&quot;([\s\S]*?)&quot;((\s)|&gt;)/igm,
     ATTRIBUTE: /(\s*)([a-zA-Z]+)={([\s\S]*?)}((\s+)|&gt;)/igm
 }
+
 
 export const QUOTE_REGEX = {
     BASE: /^>(\s*)/gm

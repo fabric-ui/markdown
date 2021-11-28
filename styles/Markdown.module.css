@@ -13,6 +13,8 @@
     --color-senary: white;
     --box-shadow-primary: #e0e0e0;
 
+    display: grid;
+    padding: 32px;
 }
 
 .quote {
@@ -50,13 +52,15 @@
     flex-flow: row wrap;
     align-items: center;
     align-content: center;
+    gap: 8px;
     justify-content: center;
     white-space: pre-wrap;
 }
 
 .divider {
-    width: calc(100% - 16px);
-    margin: 16px auto;
+
+    width: 100%;
+    margin: 8px auto;
     height: 1px;
     background: var(--border-secondary);
     border-radius: 2px;
@@ -91,7 +95,7 @@
 
     white-space: pre-wrap;
     word-wrap: break-word;
-    margin: 0 0 1rem;
+    /*margin: 1rem 0 ;*/
     /*padding: 0;*/
 
     font-size: .9rem;

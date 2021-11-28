@@ -45,6 +45,7 @@ export default function markdownParser(data, id) {
         string = removeParts(quotes, string, id, 'quote')
 
         string.split('\n').forEach((line, index) => {
+
             if(line.trim().length > 0)
                 if(!line.includes(id))
                     parsed.push({
@@ -104,7 +105,10 @@ export default function markdownParser(data, id) {
                 }
                 case 'list':{
                     parsedLine = parseList(p)
+
+                    parsedLine = findTypeface(parsedLine)
                     parsedLine = parseExternalSource(parsedLine)
+
 
                     break
                 }
@@ -139,13 +143,12 @@ export default function markdownParser(data, id) {
             }
             return parsedLine
         })
-        // parsed.forEach(e => {
-        //     // if(e.includes('<p>'))
-        //     console.log(e)
-        // })
+
     } catch (e) {
         console.log(e)
     }
-
+    parsed.forEach(e => {
+        console.log(e)
+    })
     return [parsed.join('\n'), matches]
 }

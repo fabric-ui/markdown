@@ -43,6 +43,7 @@ export function newFindLists(str) {
                     ends: startedOn + currentList.length
                 })
 
+            currentList = []
             currentType = undefined
             startedOn = undefined
         }

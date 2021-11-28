@@ -3,19 +3,23 @@ import React from 'react'
 import {EXTERNAL_SOURCE_REGEX} from "../regex";
 import styles from '../../styles/Markdown.module.css'
 
-export default function parseExternalSource(dataBlock){
+export default function parseExternalSource(dataBlock) {
     const split = dataBlock.split('\n')
     let parsed = []
-    split.forEach((line)=>{
+    split.forEach((line) => {
         let currentLine = line
         let match = currentLine.match(EXTERNAL_SOURCE_REGEX.linked_image)
-        if (match !== null) {
+
+        while (match !== null) {
 
             const alt = match[1]
             const href = match[3]
             const src = match[2]
+
             currentLine = currentLine.replace(EXTERNAL_SOURCE_REGEX.link, `<a class="${styles.link}" href="${href}"><img class="${styles.image}" src="${src}" alt="${alt}"/></a>`)
+            match = currentLine.match(EXTERNAL_SOURCE_REGEX.linked_image)
         }
+
 
         match = currentLine.match(EXTERNAL_SOURCE_REGEX.image)
         if (match !== null) {
@@ -25,8 +29,12 @@ export default function parseExternalSource(dataBlock){
 
         }
 
+
         match = currentLine.match(EXTERNAL_SOURCE_REGEX.link)
-        if (match !== null) {
+
+        while (match !== null) {
+            if(currentLine.includes('Migration'))
+                console.log(match)
             const alt = match[2]
             let href = match[3]
             const splitHref = href.split(' ')
@@ -35,19 +43,17 @@ export default function parseExternalSource(dataBlock){
                 title = splitHref.splice(1, 2).join(' ')
 
             currentLine = currentLine.replace(`[${alt}](${href})`, `<a ${title !== undefined ? `title=${title}` : ''} class="${styles.link}"  href="${splitHref[0]}">${alt}</a>`)
+            // currentLine = findLink(currentLine)
 
-            currentLine = findLink(currentLine)
+            match = currentLine.match(EXTERNAL_SOURCE_REGEX.link)
         }
-
+        // console.log(match)
         parsed.push(currentLine)
     })
 
 
-
-
     return parsed.join('\n')
 }
-
 
 
 export function findImage(line) {

@@ -5,7 +5,7 @@ export default function findHtml(str) {
     let found = [], currentTag, starts, currentTagStructure = []
     split.forEach((s, i) => {
         if (s.match(HTML_REGEX.TAG) !== null && s.match(HTML_REGEX.CLOSING_TAG) === null) {
-            console.log(s)
+
             if (currentTag === undefined) {
                 starts = i
                 currentTag = s.match(HTML_REGEX.TAG)[0]
@@ -24,7 +24,7 @@ export default function findHtml(str) {
             currentTagStructure = []
         }
     })
-    console.log(found)
+
 
     return []
 }
