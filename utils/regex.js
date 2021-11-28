@@ -24,15 +24,15 @@ export const INLINE_HEADER = {
     6: /^([^\S\r\n]*?)######(?!#.*)/gm
 }
 export const ITALIC_REGEX = {
-    BASE_UNDERLINE: /_(.+)_/gm,
-    UNDERLINE: /_(.+)_/m,
+    BASE_UNDERLINE: /_(.+)_/gs,
+    UNDERLINE: /(?!<.*)_(.+)_/s,
 
-    BASE_ASTERISK: /\*(.+)\*/gm,
-    ASTERISK: /\*(.+)\*/m
+    BASE_ASTERISK: /\*(.+)\*/gs,
+    ASTERISK: /\*(.+)\*/
 }
 export const BOLD_REGEX = {
-    BASE_UNDERLINE: /__(.+)__/gm,
-    UNDERLINE: /__(.+)__/m,
+    BASE_UNDERLINE: /__(.+)__/gs,
+    UNDERLINE: /__(.+)__/s,
 
     BASE_ASTERISK: /\*\*(.+)\*\*/gm,
     ASTERISK: /\*\*(.+)\*\*/m

@@ -15,6 +15,7 @@ import parseTable from "./parsers/parseTable";
 import parseList from "./parsers/parseList";
 import parseQuote from "./parsers/parseQuote";
 import parseRule from "./parsers/parseRule";
+import findParagraph from "./finders/findParagraph";
 
 
 const startParagraph = (line) => {
@@ -26,7 +27,7 @@ export default function markdownParser(data, id) {
     try {
         const headers = findInlineHeader(data)
         string = removeParts(headers, string, id, 'header')
-        
+
         const codes = newFindCode(data)
         string = removeParts(codes, string, id, 'code')
 
@@ -41,6 +42,7 @@ export default function markdownParser(data, id) {
 
         const quotes = newFindQuotes(data)
         string = removeParts(quotes, string, id, 'quote')
+
 
         string.split('\n').forEach((line, index) => {
             if(!line.includes(id))
@@ -80,6 +82,10 @@ export default function markdownParser(data, id) {
                             parsed.push({...quotes[index], type: 'quote'})
                             break
                         }
+                        // case 'paragraph':{
+                        //     parsed.push({...paragraph[index], type: 'paragraph'})
+                        //     break
+                        // }
                         default:
                             console.log('ON DEFAULT')
                             break
@@ -87,8 +93,10 @@ export default function markdownParser(data, id) {
             }
             return parsed
         })
+        // parsed=  findParagraph(parsed)
 
-        parsed = parsed.map(p => {
+
+        parsed = parsed.filter(p => p.type !== 'empty').map(p => {
             let parsedLine
             switch (p.type){
                 case 'code':{
@@ -127,6 +135,7 @@ export default function markdownParser(data, id) {
                     parsedLine = parseQuote(p)
                     break
                 }
+
                 case 'line': {
                     parsedLine = p.content
 
@@ -139,7 +148,7 @@ export default function markdownParser(data, id) {
                     break
                 }
                 default: {
-                    parsedLine = ''
+                    parsedLine = undefined
                     break
                 }
             }
