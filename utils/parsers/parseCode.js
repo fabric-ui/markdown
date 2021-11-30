@@ -54,7 +54,7 @@ export default function parseCode(block, index, id) {
 
         buttonID = id + '-button-' + index
 
-        parsed = `<section style="position: relative"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + '-button-' + index}" class="${styles.copyButton}"><span class="material-icons-round">copy</span></button><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`
+        parsed = `<section style="position: relative; width: 100%"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + '-button-' + index}" class="${styles.copyButton}"><span class="material-icons-round">copy</span></button><pre class="${styles.code}">${parsedBlock.join('\n')}</pre></section>`
     }
 
     return [parsed, buttonID]

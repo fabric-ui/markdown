@@ -52,7 +52,7 @@ export default function parseList(block) {
         if(tag === undefined)
             tag = tag = getTag(type)
 
-        let content = `<li class="${styles.listRow}">${l.content.replace(LIST_REGEX[type], '')}</li>`
+        let content = `<li>${l.content.replace(LIST_REGEX[type], '')}</li>`
         for (let i = 0; i < l.nestingLevel; i++) {
             content = `<${tag} class="${styles.list}">${content}</${tag}>`
         }

@@ -17,20 +17,22 @@ export default function findParagraph(parsedData) {
                 startedOn = s.starts
             }
             if (!s.content.includes('&custom-empty;') && s.content.match(/(\S+)/g) !== null) {
+                let parsedLine = s
+                let match = parsedLine.content.match(HTML_REGEX.TAG_ATTRS)
+                let content = s.content
+                if(match) {
 
-                let open = s.content.match(HTML_REGEX.TAG)
-                let closed = s.content.match(HTML_REGEX.CLOSING_TAG)
-                const hasImage = s.content.match(HTML_REGEX.IMAGE_TAG)
+                    match = parsedLine.content.match(HTML_REGEX.NOT_GLOBAL_TAG_ATTRS)
+                    content = match[0].replace(`style="${match[3]}"`, "dir=\"auto\"")
+                }
 
-                let content = hasImage === null && ((open === null && closed === null) || (open !== null && closed !== null && open.length === closed.length)) ? startParagraph(s.content) : s.content
-                // open = content.match(HTML_REGEX.TAG)
-                // closed = content.match(HTML_REGEX.CLOSING_TAG)
-
-                // content = (open === null && closed === null || (closed !== null && open.length === closed.length)) ? content : s.content
-
-                // if(s.content.trim().length > 0 && !s.content.includes('<img ') && (open === null || (closed !== null && open.length === closed.length)))
-                // if(((open === null && closed === null) || (open !== null && closed !== null && open.length === closed.length)))
-                //     console.log(content, open, closed)
+                let open = content.match(HTML_REGEX.TAG)
+                let closed = content.match(HTML_REGEX.CLOSING_TAG)
+                const hasImage = content.match(HTML_REGEX.IMAGE_TAG)
+                const isSummary =  content.match(HTML_REGEX.SUMMARY_TAG)
+                content = isSummary === null && hasImage === null && ((open === null && closed === null) || (open !== null && closed !== null && open.length === closed.length)) ? startParagraph(content) : content
+                if(hasImage === null && ((open === null && closed === null) || (open !== null && closed !== null && open.length === closed.length)))
+                    console.log(s.content)
                 if (lastWasP)
                     currentP.push(content)
                 else {
@@ -41,9 +43,10 @@ export default function findParagraph(parsedData) {
         } else if (s.content.trim().length > 0) {
             lastWasP = false
             if (currentP.length > 0) {
+                // console.log(currentP, currentP.length > 1 )
                 parsed.push({
                     starts: startedOn,
-                    content: currentP.length > 1 ? startParagraph(currentP.join('\n')) : currentP.join('\n'),
+                    content:  currentP.join('\n'),
                     length: 0,
                     type: 'line'
                 })

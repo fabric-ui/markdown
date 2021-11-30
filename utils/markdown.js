@@ -104,9 +104,10 @@ export default function markdownParser(data, id) {
                     break
                 }
                 case 'list':{
-                    parsedLine = parseList(p)
+                    parsedLine = findTypeface(p.content)
+                    parsedLine = parseList({...p, content: parsedLine})
 
-                    parsedLine = findTypeface(parsedLine)
+
                     parsedLine = parseExternalSource(parsedLine)
 
 
@@ -147,8 +148,6 @@ export default function markdownParser(data, id) {
     } catch (e) {
         console.log(e)
     }
-    parsed.forEach(e => {
-        console.log(e)
-    })
+    // console.log(parsed.join('\n').match(/<[^/>][^>]*><\/[^>]+>/))
     return [parsed.join('\n'), matches]
 }

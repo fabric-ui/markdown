@@ -111,6 +111,9 @@ export const JSX_REGEX = {
 }
 
 export const HTML_REGEX = {
+    SUMMARY_TAG: /<summary((([^\S\r\n]+)(.*?))|)>/g,
+    TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)style="(.*)">/g,
+    NOT_GLOBAL_TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)style="(.*)">/,
     TAG: /<([a-zA-Z]+)((([^\S\r\n]+)(.*?))|)>/g,
     // SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
     CLOSING_TAG: /<\/([a-zA-Z]+)([^\S\r\n]*?)>/g,

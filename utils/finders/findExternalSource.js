@@ -33,8 +33,8 @@ export default function parseExternalSource(dataBlock) {
         match = currentLine.match(EXTERNAL_SOURCE_REGEX.link)
 
         while (match !== null) {
-            if(currentLine.includes('Migration'))
-                console.log(match)
+            // if(currentLine.includes('Migration'))
+            //     console.log(match)
             const alt = match[2]
             let href = match[3]
             const splitHref = href.split(' ')
