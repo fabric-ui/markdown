@@ -2,7 +2,7 @@ import React from 'react'
 
 import {INLINE_HEADER} from "../regex";
 
-export function findInlineHeader(str) {
+export function findInlineHeader(str, id) {
     let headers = []
     const split = str.split('\n')
     split.forEach((s, i) => {
@@ -14,7 +14,8 @@ export function findInlineHeader(str) {
                     ends: i + 1,
                     length: 0,
                     content: s,
-                    variant: k
+                    variant: k,
+                    id:  id + '-header-' + i
                 })
                 found = true
             }

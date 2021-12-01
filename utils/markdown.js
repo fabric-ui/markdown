@@ -22,10 +22,10 @@ import findHtml from "./finders/findHtml";
 
 
 export default function markdownParser(data, id) {
-    let string = data,  parsed = [], matches = []
+    let string = data,  parsed = [], matches = [], metadata
     try {
 
-        const headers = findInlineHeader(data)
+        const headers = findInlineHeader(data, id)
         string = removeParts(headers, string, id, 'header')
 
         const codes = newFindCode(data)
@@ -89,8 +89,9 @@ export default function markdownParser(data, id) {
                                 break
                         }
                 }
-            // }
         })
+
+        metadata = [...parsed]
 
         parsed=  findParagraph(parsed)
 
@@ -118,7 +119,8 @@ export default function markdownParser(data, id) {
                     break
                 }
                 case 'header':{
-                    parsedLine = parseHeader(p)
+                    parsedLine = findTypeface(p.content)
+                    parsedLine = parseHeader({...p, content: parsedLine})
                     parsedLine = findLink(parsedLine)
 
                     break
@@ -149,5 +151,5 @@ export default function markdownParser(data, id) {
         console.log(e)
     }
     // console.log(parsed.join('\n').match(/<[^/>][^>]*><\/[^>]+>/))
-    return [parsed.join('\n'), matches]
+    return [parsed.join('\n'), matches, metadata]
 }

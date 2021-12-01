@@ -1,72 +1,64 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 import PropTypes from "prop-types";
 import styles from '../styles/Markdown.module.css'
 import markdownParser from "../utils/markdown";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import useMarkdown from "../hooks/useMarkdown";
+import Navigation from "./Navigation";
 
 export default function Markdown(props) {
-    const id = useMemo(() => {
-        let result = '';
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let charactersLength = characters.length;
-        for (let i = 0; i < 16; i++) {
-            result += characters.charAt(Math.floor(Math.random() *
-                charactersLength));
-        }
-        return result;
-    }, [])
+    const headers = useMemo(() => {
 
-    const [copyTo, setCopyTo] = useState([])
+        return props.hook.metadata.filter(e => e.type === 'header')
+    }, [props.hook])
+    const ref = useRef()
 
-    const copyToClipboard = useCopyToClipboard()
-    const data = useMemo(() => {
-        if (props.data !== undefined && props.data !== null) {
-            const [parsed, ids] = new markdownParser(props.data, id)
-            setCopyTo(ids)
 
-            return parsed
-        } else
-            return ''
-    }, [props.data])
+    const intersectionObs = useRef()
+    const [onHeader, setOnHeader] = useState(0)
 
-    const handleClick = (event) => {
-        const el = event.currentTarget.firstChild
-        const success = copyToClipboard(event.currentTarget.parentNode.childNodes[2].textContent)
-        if(success){
-            if(el) {
-                el.innerText = 'check'
-                el.parentNode.classList.add(styles.successButton)
-            }
-            setTimeout(() => {
-                if(el) {
-                    el.parentNode.classList.remove(styles.successButton)
-                    el.innerText = 'copy'
-                }
-
-            }, 1750)
-        }
+    const handleIntersection = (event) => {
+        const inter = event.filter(e => e.isIntersecting)
+        if (inter && inter.length > 0)
+            setOnHeader(inter[0].target.id)
     }
 
     useEffect(() => {
-        copyTo?.forEach(element => {
-            const ref = document.getElementById(element)
-            if(ref)
-                ref.addEventListener('click', handleClick)
+        intersectionObs.current = new IntersectionObserver(handleIntersection, {
+            root: ref.current,
+            rootMargin: "0px 0px -50% 0px"
+        })
+        headers.forEach((e) => {
+            const element = document.getElementById(e.id)
+            if(element)
+                intersectionObs.current?.observe(element)
         })
         return () => {
-            copyTo?.forEach(element => {
-                const ref = document.getElementById(element)
-                if(ref)
-                    ref.removeEventListener('click', handleClick)
+            headers.forEach((e) => {
+                const element = document.getElementById(e.id)
+                if (element !== null)
+                    intersectionObs.current?.unobserve(element)
             })
         }
-    }, [copyTo])
+    }, [headers])
+
     return (
-        <article className={styles.wrapper} dangerouslySetInnerHTML={{__html: data}}/>
+        <div className={styles.wrapper} ref={ref}>
+            <article className={styles.article} dangerouslySetInnerHTML={{__html: props.hook.data}}/>
+
+            <Navigation
+                onHeader={onHeader}
+                headers={headers}
+                setOnHeader={setOnHeader}
+                scrollTo={position => {
+                    ref.current.scroll(0, position - ref.current.offsetTop)
+                }}
+            />
+        </div>
     )
 }
 
 Markdown.propTypes = {
-    data: PropTypes.string.isRequired
+    hook: PropTypes.object.isRequired
 }
