@@ -2,10 +2,10 @@ import React from 'react'
 
 export const LIST_REGEX = {
     number: /^[0-9]+\. | {3}[0-9]+\. /gi,
-    asterisk: /^\* | {3}\* /gi,
-    minus: /^- | {3}- /gi,
-    plus: /^\+ | {3}\+ /gi,
-    nested: /^\s{3}(.+)/gi
+    asterisk: /^(\s{0,3})\* /gi,
+    minus: /^(\s{0,3})-\s/gi,
+    plus: /^(\s{0,3})\+\s/gi,
+    nested: /^(\s{0,3})(.+)/gi
 }
 
 export const INLINE_HEADER = {
@@ -24,11 +24,11 @@ export const INLINE_HEADER = {
     6: /^([^\S\r\n]*?)######(?!#.*)/gm
 }
 export const ITALIC_REGEX = {
-    BASE_UNDERLINE: /_(.+)_/gs,
-    UNDERLINE: /(?!<.*)_(.+)_/s,
+    BASE_UNDERLINE: /_(.+?)_/gs,
+    UNDERLINE: /(?!<.*)_(.+?)_/s,
 
-    BASE_ASTERISK: /\*(.+)\*/gs,
-    ASTERISK: /\*(.+)\*/
+    BASE_ASTERISK: /\*(.+?)\*/gs,
+    ASTERISK: /\*(.+?)\*/
 }
 // export const BOLD_ITALIC_REGEX = {
 //     BASE_UNDERLINE: /___(.+)___/gm,
@@ -38,15 +38,15 @@ export const ITALIC_REGEX = {
 //     ASTERISK: /\*\*\*(.+)\*\*\*/
 // }
 export const BOLD_REGEX = {
-    BASE_UNDERLINE: /__(.+)__/gs,
-    UNDERLINE: /__(.+)__/s,
+    BASE_UNDERLINE: /__(.+?)__/gs,
+    UNDERLINE: /__(.+?)__/s,
 
-    BASE_ASTERISK: /\*\*(.+)\*\*/gm,
-    ASTERISK: /\*\*(.+)\*\*/m
+    BASE_ASTERISK: /\*\*(.+?)\*\*/gm,
+    ASTERISK: /\*\*(.+?)\*\*/m
 }
 export const STRIKETHROUGH = {
-    BASE: /~~(.+)~~/gm,
-    NOT_GLOBAL: /~~(.+)~~/m,
+    BASE: /~~(.+?)~~/gm,
+    NOT_GLOBAL: /~~(.+?)~~/m,
 }
 export const INLINE_CODE_REGEX={
     BASE: /`(.+?)`/g,

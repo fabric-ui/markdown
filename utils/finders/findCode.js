@@ -1,6 +1,6 @@
 import React from 'react'
 import {CODE_BLOCK} from "../regex";
-import findIndex from "../findIndex";
+import findRowIndex from "../findRowIndex";
 
 
 export function newFindCode(str) {
@@ -8,8 +8,7 @@ export function newFindCode(str) {
     let matches = []
     if (match !== null)
         match.forEach(m => {
-
-            const indexes = findIndex(str, m)
+            const indexes = findRowIndex(str, m)
 
             matches.push({
                 starts: indexes.start,

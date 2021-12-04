@@ -2,7 +2,7 @@ import React from 'react'
 
 import {TABLE_REGEX} from "../regex";
 import styles from '../../styles/Markdown.module.css'
-import findIndex from "../findIndex";
+import findRowIndex from "../findRowIndex";
 
 
 export function newFindTables(str) {
@@ -31,7 +31,7 @@ export function newFindTables(str) {
     })
 
     tables.forEach(t => {
-        const index = findIndex(str, t)
+        const index = findRowIndex(str, t)
 
         indexes.push({
             starts: index.start,

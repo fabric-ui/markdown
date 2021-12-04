@@ -101,6 +101,7 @@ export default function markdownParser(data, id) {
                 case 'code':{
                     const [d, bID] = parseCode(p, p.index, id)
                     parsedLine = d
+
                     matches.push(bID)
                     break
                 }
@@ -108,9 +109,7 @@ export default function markdownParser(data, id) {
                     parsedLine = findTypeface(p.content)
                     parsedLine = parseList({...p, content: parsedLine})
 
-
                     parsedLine = parseExternalSource(parsedLine)
-
 
                     break
                 }

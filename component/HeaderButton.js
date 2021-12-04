@@ -11,7 +11,7 @@ export default function HeaderButton(props) {
         let stillValid = true
         let nested = []
         props.headers.forEach((h, i) => {
-            if (i > props.index && h.variant > props.header.variant && stillValid && h.variant === 3)
+            if (i > props.index && h.variant > props.header.variant && stillValid)
                 nested.push(h)
             else if(i > props.index)
                 stillValid = false
@@ -26,7 +26,7 @@ export default function HeaderButton(props) {
             <summary
 
                 className={styles.button}
-                data-highlight={`${props.onHeader === props.header.id}`}
+                data-highlight={`${props.onHeader === props.header.id || nestedHeaders.find(nested => props.onHeader === nested.id) !== undefined}`}
                 onClick={() => {
                     setOpen(!open)
                     const element = document.getElementById(props.header.id)
@@ -39,17 +39,16 @@ export default function HeaderButton(props) {
                 {props.header.content.replaceAll(INLINE_HEADER[props.header.variant + '-IND'], '')}
                 <Ripple/>
             </summary>
-            {nestedHeaders.map(nested => (
+            {nestedHeaders.map((nested, i) => (
                 <button
+                    key={'header-'+i}
                     className={styles.button}
                     data-variant={`${nested.variant}`}
                     data-highlight={`${props.onHeader === nested.id}`}
                     onClick={() => {
                         const element = document.getElementById(nested.id)
-                        if (element) {
-                            let target = element.parentNode
+                        if (element)
                             props.scrollTo(element.getBoundingClientRect().top)
-                        }
                     }}>
                     {nested.content.replaceAll(INLINE_HEADER[nested.variant + '-IND'], '')}
                     <Ripple/>

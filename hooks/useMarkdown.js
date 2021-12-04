@@ -26,7 +26,7 @@ export default function useMarkdown(markdownData){
             return {htmlData, metadata}
         } else
             return {htmlData: null, metadata: []}
-    }, [markdownData])
+    }, [markdownData, id])
 
     const handleClick = (event) => {
         const el = event.currentTarget.firstChild
@@ -47,8 +47,10 @@ export default function useMarkdown(markdownData){
     }
 
     useEffect(() => {
+
         copyTo?.forEach(element => {
             const ref = document.getElementById(element)
+
             if (ref)
                 ref.addEventListener('click', handleClick)
         })

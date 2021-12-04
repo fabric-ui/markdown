@@ -1,4 +1,4 @@
-export default function findIndex(string, toFind){
+export default function findRowIndex(string, toFind){
     let start
 
     const d = string.split(toFind)

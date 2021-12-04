@@ -1,5 +1,5 @@
 .wrapper{
-    width: 25%;
+    width: clamp(250px, 25%, 300px);
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -28,6 +28,7 @@
     font-size: .9rem;
     color: var(--fabric-color-tertiary) !important;
     cursor: pointer;
+    width: 100%;
 
 }
 
