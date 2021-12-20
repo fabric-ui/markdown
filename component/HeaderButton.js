@@ -1,5 +1,5 @@
 import styles from "../styles/Navigation.module.css";
-import {Ripple} from "mfc-core";
+import {Ripple} from "@f-ui/core";
 import React, {useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import {INLINE_HEADER} from "../utils/regex";

@@ -1,3 +1,4 @@
+import React from 'react'
 import {HTML_REGEX} from "../regex";
 
 export default function findHtml(str) {

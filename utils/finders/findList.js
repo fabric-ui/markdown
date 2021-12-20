@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {LIST_REGEX} from "../regex";
-import styles from "../../styles/Markdown.module.css";
 
 export function getType(e) {
     switch (true) {

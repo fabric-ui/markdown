@@ -2,9 +2,6 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 import PropTypes from "prop-types";
 import styles from '../styles/Markdown.module.css'
-import markdownParser from "../utils/markdown";
-import useCopyToClipboard from "../hooks/useCopyToClipboard";
-import useMarkdown from "../hooks/useMarkdown";
 import Navigation from "./Navigation";
 
 export default function Markdown(props) {

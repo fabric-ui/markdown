@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from "prop-types";
 import styles from '../styles/Navigation.module.css'
-import {Ripple} from "mfc-core";
-import {INLINE_HEADER} from "../utils/regex";
 import HeaderButton from "./HeaderButton";
 
 export default function Navigation(props) {

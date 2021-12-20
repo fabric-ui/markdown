@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BOLD_REGEX, INLINE_CODE_REGEX, ITALIC_REGEX, STRIKETHROUGH} from "../regex";
+import {BOLD_REGEX, INLINE_CODE_REGEX, ITALIC_REGEX, STRIKETHROUGH} from "../regex";
 import styles from '../../styles/Markdown.module.css'
 
 

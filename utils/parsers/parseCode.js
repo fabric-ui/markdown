@@ -1,3 +1,4 @@
+import React from 'react'
 import {CODE_BLOCK} from "../regex";
 import styles from "../../styles/Markdown.module.css";
 import javascriptParser from "./code/javascript";

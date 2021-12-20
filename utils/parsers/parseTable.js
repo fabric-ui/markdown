@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from "../../styles/Markdown.module.css";
 
 const removeLimiters = (str) => {

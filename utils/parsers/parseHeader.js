@@ -1,3 +1,4 @@
+import React from 'react'
 import {INLINE_HEADER} from "../regex";
 import styles from '../../styles/Markdown.module.css'
 
