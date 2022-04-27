@@ -15,6 +15,7 @@ import parseList from "./parsers/parseList";
 import parseQuote from "./parsers/parseQuote";
 import parseRule from "./parsers/parseRule";
 import findParagraph from "./finders/findParagraph";
+import {findCheckboxes} from "./finders/findCheckboxes";
 
 
 export default function markdownParser(data, id) {
@@ -141,10 +142,10 @@ export default function markdownParser(data, id) {
             }
             return parsedLine
         })
-
+        parsed = findCheckboxes(parsed)
     } catch (e) {
         console.log(e)
     }
-    // console.log(parsed.join('\n').match(/<[^/>][^>]*><\/[^>]+>/))
+
     return [parsed.join('\n'), matches, metadata]
 }

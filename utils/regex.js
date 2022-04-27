@@ -45,8 +45,8 @@ export const BOLD_REGEX = {
     ASTERISK: /\*\*(.+?)\*\*/m
 }
 export const STRIKETHROUGH = {
-    BASE: /~~(.+?)~~/gm,
-    NOT_GLOBAL: /~~(.+?)~~/m,
+    BASE: /~(.+?)~/gm,
+    NOT_GLOBAL: /~(.+?)~/m,
 }
 export const INLINE_CODE_REGEX={
     BASE: /`(.+?)`/g,

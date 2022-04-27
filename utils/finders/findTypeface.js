@@ -43,6 +43,7 @@ export function findTypeface(dataBlock) {
 
             // STRIKETHROUGH
             const strikethrough = str.match(STRIKETHROUGH.BASE)
+
             if (strikethrough !== null)
                 strikethrough.forEach(i => {
                     const matched = i.match(STRIKETHROUGH.NOT_GLOBAL)
