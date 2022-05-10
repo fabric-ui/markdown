@@ -1,6 +1,6 @@
 {
   "name": "@f-ui/markdown",
-  "version": "0.1.0-alpha",
+  "version": "0.1.1-alpha",
   "author": "facobackup",
   "license": "MIT",
   "main": "dist/index.js",
@@ -51,7 +51,7 @@
   "files": [
     "dist"
   ],
-  "description": "Useful React components.",
+  "description": "Markdown processor.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fabric-ui/markdown.git"
