@@ -1,5 +1,5 @@
 import styles from "../styles/Navigation.module.css";
-import {Ripple} from "@f-ui/core";
+
 import React, {useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import {INLINE_HEADER} from "../utils/regex";
@@ -37,7 +37,7 @@ export default function HeaderButton(props) {
                     }
                 }}>
                 {props.header.content.replaceAll(INLINE_HEADER[props.header.variant + '-IND'], '')}
-                <Ripple/>
+
             </summary>
             {nestedHeaders.map((nested, i) => (
                 <button
@@ -51,7 +51,7 @@ export default function HeaderButton(props) {
                             props.scrollTo(element.getBoundingClientRect().top)
                     }}>
                     {nested.content.replaceAll(INLINE_HEADER[nested.variant + '-IND'], '')}
-                    <Ripple/>
+
                 </button>
             ))}
 
