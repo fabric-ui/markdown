@@ -29,9 +29,10 @@ export function newFindQuotes(str){
                 quotes.push({
                     starts: startedOn ,
                     ends: startedOn + blocks.length,
-                    content: blocks.join('\n'),
+                    content: blocks.map(b => b.replace(QUOTE_REGEX.BASE, '')).join('\n'),
                     length: blocks.length
                 })
+            console.log(blocks)
             blocks = []
         }
     })

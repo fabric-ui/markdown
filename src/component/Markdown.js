@@ -9,7 +9,7 @@ export default function Markdown(props) {
 
         return props.hook.metadata.filter(e => e.type === 'header')
     }, [props.hook])
-    const ref = useRef()
+    const refW = useRef()
 
 
     const intersectionObs = useRef()
@@ -23,7 +23,7 @@ export default function Markdown(props) {
 
     useEffect(() => {
         intersectionObs.current = new IntersectionObserver(handleIntersection, {
-            root: ref.current,
+            root: refW.current,
             rootMargin: "0px 0px -50% 0px"
         })
         headers.forEach((e) => {
@@ -41,15 +41,15 @@ export default function Markdown(props) {
     }, [headers])
 
     return (
-        <div className={styles.wrapper} ref={ref}>
-            <article className={styles.article} dangerouslySetInnerHTML={{__html: props.hook.data}}/>
+        <div className={styles.wrapper} ref={refW}>
 
+            <article className={styles.article} ref={props.hook.ref} dangerouslySetInnerHTML={{__html: props.hook.data}}/>
             <Navigation
                 onHeader={onHeader}
                 headers={headers}
                 setOnHeader={setOnHeader}
                 scrollTo={position => {
-                    ref.current.scroll(0, position - ref.current.offsetTop)
+                   refW.current.scroll(0, position - ref.current.offsetTop)
                 }}
             />
         </div>

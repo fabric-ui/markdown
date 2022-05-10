@@ -24,7 +24,7 @@ export const INLINE_HEADER = {
     6: /^([^\S\r\n]*?)######(?!#.*)/gm
 }
 export const ITALIC_REGEX = {
-    BASE_UNDERLINE: /_(.+?)_/gs,
+    BASE_UNDERLINE: /(\s+)_(.+?)_(\s+)/gs,
     UNDERLINE: /(?!<.*)_(.+?)_/s,
 
     BASE_ASTERISK: /\*(.+?)\*/gs,
@@ -38,8 +38,8 @@ export const ITALIC_REGEX = {
 //     ASTERISK: /\*\*\*(.+)\*\*\*/
 // }
 export const BOLD_REGEX = {
-    BASE_UNDERLINE: /__(.+?)__/gs,
-    UNDERLINE: /__(.+?)__/s,
+    BASE_UNDERLINE: /(\s+)__(.+?)__(\s+)/gs,
+    UNDERLINE: /(\s+)__(.+?)__(\s+)/s,
 
     BASE_ASTERISK: /\*\*(.+?)\*\*/gm,
     ASTERISK: /\*\*(.+?)\*\*/m
@@ -55,7 +55,7 @@ export const INLINE_CODE_REGEX={
 export const RULE_REGEX = {
     // underline: /^_+$|^_$/gi,
     // base: /^-+$|^-$|^\*+$|^\*$|^_+$|^_$/gi,
-    BASE: /^(-+|\*+|_+)$/mg,
+    BASE: /^(-+|\*+|_+)(\s*)$/mg,
     EMPTY: /(?!\S)/g,
     LINE_BEFORE: /(?!\S)([\r\n]|\n)^(-+|\*+|_+)(\s*)$/mg,
     LINE_AFTER: /(\S+)$([\r\n]|\n)(^-+|^\*+|^_+)([\r\n]|\n)(?!\S)/gm,
@@ -112,8 +112,8 @@ export const JSX_REGEX = {
 
 export const HTML_REGEX = {
     SUMMARY_TAG: /<summary((([^\S\r\n]+)(.*?))|)>/g,
-    TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)style="(.*)">/g,
-    NOT_GLOBAL_TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)style="(.*)">/,
+    TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)(style|dir|align)(\s*)=(\s*)"(.*)">/g,
+    NOT_GLOBAL_TAG_ATTRS: /<([a-zA-Z]+)([^\S\r\n]?)(style|dir|align)(\s*)=(\s*)"(.*)">/,
     TAG: /<([a-zA-Z]+)((([^\S\r\n]+)(.*?))|)>/g,
     // SELF_CLOSING_TAG: /&lt;\/(.+)&gt;/gim,
     CLOSING_TAG: /<\/([a-zA-Z]+)([^\S\r\n]*?)>/g,
@@ -124,5 +124,5 @@ export const HTML_REGEX = {
 
 
 export const QUOTE_REGEX = {
-    BASE: /^>(\s*)/gm
+    BASE: /^(\s*)>(\s*)/gm
 }

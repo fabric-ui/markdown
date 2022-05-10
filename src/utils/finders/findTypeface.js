@@ -18,11 +18,13 @@ export function findTypeface(dataBlock) {
                     const matched = i.match(BOLD_REGEX.ASTERISK)
                     str = str.replace(matched[0], `<b>${matched[1]}</b>`)
                 })
-            if (underline !== null)
-                underline.forEach(i => {
-                    const matched = i.match(BOLD_REGEX.UNDERLINE)
-                    str = str.replace(matched[0], `<b>${matched[1]}</b>`)
-                })
+            if (underline !== null) {
+               console.log(underline)
+               underline.forEach(i => {
+                  const matched = i.match(BOLD_REGEX.UNDERLINE)
+                  str = str.replace(matched[0], `<b>${matched[1]}</b>`)
+               })
+            }
             // BOLD
 
             // ITALIC
