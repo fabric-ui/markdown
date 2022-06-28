@@ -1,6 +1,6 @@
-import React from 'react'
-import {INLINE_HEADER} from "../regex";
-import styles from '../../styles/Markdown.module.css'
+import React from "react"
+import {INLINE_HEADER} from "../regex"
+import styles from "../../styles/Markdown.module.css"
 
 export default function parseHeader(block){
     const replaced = block.content.replaceAll(INLINE_HEADER[block.variant+'-IND'], '')

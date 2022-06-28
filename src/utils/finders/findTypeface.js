@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react"
 
-import {BOLD_REGEX, INLINE_CODE_REGEX, ITALIC_REGEX, STRIKETHROUGH} from "../regex";
-import styles from '../../styles/Markdown.module.css'
+import {BOLD_REGEX, INLINE_CODE_REGEX, ITALIC_REGEX, STRIKETHROUGH} from "../regex"
+import styles from "../../styles/Markdown.module.css"
 
 
 export function findTypeface(dataBlock) {

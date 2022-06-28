@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 
 export const LIST_REGEX = {
     number: /^[0-9]+\. | {3}[0-9]+\. /gi,

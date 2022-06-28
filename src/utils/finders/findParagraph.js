@@ -1,5 +1,5 @@
-import styles from "../../styles/Markdown.module.css";
-import {HTML_REGEX} from "../regex";
+import styles from "../../styles/Markdown.module.css"
+import {HTML_REGEX} from "../regex"
 
 const startParagraph = (line) => {
     return `<p class="${styles.paragraph}">${line}</p>`

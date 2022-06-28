@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default function jsxParser(component){
     if (component.type === React.Fragment && component.props.children && component.props.children.length > 0) {

@@ -1,5 +1,5 @@
-import React from 'react'
-import {HTML_REGEX} from "../regex";
+import React from "react"
+import {HTML_REGEX} from "../regex"
 
 export default function findHtml(str) {
     const split = str.split('\n')

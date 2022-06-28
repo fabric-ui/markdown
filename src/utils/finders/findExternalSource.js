@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react"
 
-import {EXTERNAL_SOURCE_REGEX} from "../regex";
-import styles from '../../styles/Markdown.module.css'
+import {EXTERNAL_SOURCE_REGEX} from "../regex"
+import styles from "../../styles/Markdown.module.css"
 
 export default function parseExternalSource(dataBlock) {
     const split = dataBlock.split('\n')

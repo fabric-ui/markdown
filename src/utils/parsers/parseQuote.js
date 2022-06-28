@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from "../../styles/Markdown.module.css";
+import React from "react"
+import styles from "../../styles/Markdown.module.css"
 
 export default function parseQuote(block){
     let split = block.content.split('\n')

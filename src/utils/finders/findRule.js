@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react"
 
-import {RULE_REGEX} from "../regex";
+import {RULE_REGEX} from "../regex"
 
 
 export function newFindRules(str) {

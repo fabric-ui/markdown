@@ -1,8 +1,8 @@
-import styles from "../styles/Navigation.module.css";
+import styles from "../styles/Navigation.module.css"
 
-import React, {useMemo, useState} from "react";
-import PropTypes from "prop-types";
-import {INLINE_HEADER} from "../utils/regex";
+import React, {useMemo, useState} from "react"
+import PropTypes from "prop-types"
+import {INLINE_HEADER} from "../utils/regex"
 
 export default function HeaderButton(props) {
     const [open, setOpen] = useState()

@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from "react"
 
-import PropTypes from "prop-types";
-import styles from '../styles/Markdown.module.css'
-import Navigation from "./Navigation";
+import PropTypes from "prop-types"
+import styles from "../styles/Markdown.module.css"
+import Navigation from "./Navigation"
 
 export default function Markdown(props) {
     const headers = useMemo(() => {

@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from "prop-types";
-import styles from '../styles/Markdown.module.css'
+import React from "react"
+import PropTypes from "prop-types"
+import styles from "../styles/Markdown.module.css"
 
 export default function MarkdownMinimal(props) {
     return (

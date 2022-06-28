@@ -1,6 +1,6 @@
-import React from 'react'
-import {CODE_BLOCK} from "../regex";
-import findRowIndex from "../findRowIndex";
+import React from "react"
+import {CODE_BLOCK} from "../regex"
+import findRowIndex from "../findRowIndex"
 
 
 export function newFindCode(str) {

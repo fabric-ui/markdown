@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react"
 
-import {LIST_REGEX} from "../regex";
+import {LIST_REGEX} from "../regex"
 
 export function getType(e) {
     switch (true) {

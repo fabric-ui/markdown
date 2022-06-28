@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react"
 
-import {INLINE_HEADER} from "../regex";
+import {INLINE_HEADER} from "../regex"
 
 export function findInlineHeader(str, id) {
     let headers = []

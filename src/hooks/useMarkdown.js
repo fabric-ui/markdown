@@ -1,8 +1,7 @@
-import React, {useRef} from 'react'
-import {useEffect, useMemo, useState} from "react";
-import useCopyToClipboard from "./useCopyToClipboard";
-import markdownParser from "../utils/markdown";
-import styles from "../styles/Markdown.module.css";
+import React, {useEffect, useMemo, useRef, useState} from "react"
+import useCopyToClipboard from "./useCopyToClipboard"
+import markdownParser from "../utils/markdown"
+import styles from "../styles/Markdown.module.css"
 
 export default function useMarkdown(markdownData) {
    const id = useMemo(() => {

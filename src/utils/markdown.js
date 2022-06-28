@@ -1,21 +1,21 @@
-import React from 'react'
-import {newFindLists} from "./finders/findList";
-import {newFindQuotes} from "./finders/findQuote";
-import {findTypeface} from "./finders/findTypeface";
-import {findInlineHeader} from "./finders/findHeader";
-import {newFindRules} from "./finders/findRule";
-import {newFindTables} from "./finders/findTable";
-import parseExternalSource, {findLink} from "./finders/findExternalSource";
-import {newFindCode} from "./finders/findCode";
-import removeParts from "./removeParts";
-import parseCode from "./parsers/parseCode";
-import parseHeader from "./parsers/parseHeader";
-import parseTable from "./parsers/parseTable";
-import parseList from "./parsers/parseList";
-import parseQuote from "./parsers/parseQuote";
-import parseRule from "./parsers/parseRule";
-import findParagraph from "./finders/findParagraph";
-import {findCheckboxes} from "./finders/findCheckboxes";
+import React from "react"
+import {newFindLists} from "./finders/findList"
+import {newFindQuotes} from "./finders/findQuote"
+import {findTypeface} from "./finders/findTypeface"
+import {findInlineHeader} from "./finders/findHeader"
+import {newFindRules} from "./finders/findRule"
+import {newFindTables} from "./finders/findTable"
+import parseExternalSource, {findLink} from "./finders/findExternalSource"
+import {newFindCode} from "./finders/findCode"
+import removeParts from "./removeParts"
+import parseCode from "./parsers/parseCode"
+import parseHeader from "./parsers/parseHeader"
+import parseTable from "./parsers/parseTable"
+import parseList from "./parsers/parseList"
+import parseQuote from "./parsers/parseQuote"
+import parseRule from "./parsers/parseRule"
+import findParagraph from "./finders/findParagraph"
+import {findCheckboxes} from "./finders/findCheckboxes"
 
 
 export default function markdownParser(data, id) {

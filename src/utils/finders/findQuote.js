@@ -1,7 +1,5 @@
-import React from 'react'
-
-import styles from "../../styles/Markdown.module.css";
-import {QUOTE_REGEX} from "../regex";
+import React from "react"
+import {QUOTE_REGEX} from "../regex"
 
 
 export function newFindQuotes(str){

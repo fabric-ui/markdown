@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from "../../styles/Markdown.module.css";
+import React from "react"
+import styles from "../../styles/Markdown.module.css"
 
 const removeLimiters = (str) => {
     return str.split('| ').filter(s => s !== '| ').join('').split(' |').filter(s => s !== ' |').join('')

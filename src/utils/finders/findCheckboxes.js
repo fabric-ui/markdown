@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from '../../styles/Markdown.module.css'
+import React from "react"
+import styles from "../../styles/Markdown.module.css"
 
 
 const REGEX = {
@@ -9,7 +9,7 @@ const REGEX = {
 
 export function findCheckboxes(lines) {
     return lines.map(p => {
-        const withCheck =  p.replaceAll(REGEX.W_BASE, `<div class="material-icons-round ${styles.checkbox}" style="font-size: 12px;">check</div>`)
-        return withCheck.replaceAll(REGEX.BASE, `<div class="material-icons-round  ${styles.checkbox}"></div>`)
+        const withCheck =  p.replaceAll(REGEX.W_BASE, `<div data-icon="true" class"${styles.checkbox}" style="font-size: 12px;">check</div>`)
+        return withCheck.replaceAll(REGEX.BASE, `<div data-icon="true" class="${styles.checkbox}"></div>`)
     })
 }

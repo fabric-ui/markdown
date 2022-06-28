@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from "prop-types";
-import styles from '../styles/Navigation.module.css'
-import HeaderButton from "./HeaderButton";
+import React from "react"
+import PropTypes from "prop-types"
+import styles from "../styles/Navigation.module.css"
+import HeaderButton from "./HeaderButton"
 
 export default function Navigation(props) {
     return (

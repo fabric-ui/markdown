@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react"
 
-import {TABLE_REGEX} from "../regex";
-import findRowIndex from "../findRowIndex";
+import {TABLE_REGEX} from "../regex"
+import findRowIndex from "../findRowIndex"
 
 
 export function newFindTables(str) {
