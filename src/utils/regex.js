@@ -2,10 +2,10 @@ import React from "react"
 
 export const LIST_REGEX = {
     number: /^[0-9]+\. | {3}[0-9]+\. /gi,
-    asterisk: /^(\s{0,3})\* /gi,
-    minus: /^(\s{0,3})-\s/gi,
-    plus: /^(\s{0,3})\+\s/gi,
-    nested: /^(\s{0,3})(.+)/gi
+    asterisk: /^(\s*)\* /gi,
+    minus: /^(\s*)-\s/gi,
+    plus: /^(\s*)\+\s/gi,
+    nested: /^(\s*)(.+)/gi
 }
 
 export const INLINE_HEADER = {
@@ -38,8 +38,8 @@ export const ITALIC_REGEX = {
 //     ASTERISK: /\*\*\*(.+)\*\*\*/
 // }
 export const BOLD_REGEX = {
-    BASE_UNDERLINE: /(\s+)__(.+?)__(\s+)/gs,
-    UNDERLINE: /(\s+)__(.+?)__(\s+)/s,
+    BASE_UNDERLINE: /(\s+)__(.+?)__(\s+)|^__(.+?)__$/gs,
+    UNDERLINE: /(\s+)__(.+?)__(\s+)|^__(.+?)__$/s,
 
     BASE_ASTERISK: /\*\*(.+?)\*\*/gm,
     ASTERISK: /\*\*(.+?)\*\*/m
@@ -55,7 +55,7 @@ export const INLINE_CODE_REGEX={
 export const RULE_REGEX = {
     // underline: /^_+$|^_$/gi,
     // base: /^-+$|^-$|^\*+$|^\*$|^_+$|^_$/gi,
-    BASE: /^(-+|\*+|_+)(\s*)$/mg,
+    BASE: /^(\s*)(-+|\*+|_+)(\s*)$/mg,
     EMPTY: /(?!\S)/g,
     LINE_BEFORE: /(?!\S)([\r\n]|\n)^(-+|\*+|_+)(\s*)$/mg,
     LINE_AFTER: /(\S+)$([\r\n]|\n)(^-+|^\*+|^_+)([\r\n]|\n)(?!\S)/gm,

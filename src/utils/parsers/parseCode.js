@@ -1,62 +1,48 @@
 import React from "react"
 import {CODE_BLOCK} from "../regex"
 import styles from "../../styles/Markdown.module.css"
-import javascriptParser from "./code/javascript"
-import jsonParser from "./code/json"
-import consoleParser from "./code/console"
-import htmlParser from "./code/html"
 
 function findTag(data) {
-    return data.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+   return data
 }
 
 
 function identifyType(str, clean) {
-    let parsedClean = findTag(clean)
-    parsedClean = parsedClean.split("\n")
-    parsedClean = parsedClean.map(p => {
-        return `&nbsp;${p}`
-    })
+   const parsedClean = clean
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .split("\n")
+      .map(p => `&nbsp;${p}`)
+      .join("\n")
+      .replaceAll(/'/g, "&quot;")
+      .replaceAll(/"/g, "&quot;")
+      .replaceAll(/´/g, "&quot;")
 
-    parsedClean = parsedClean.join("\n")
-
-    parsedClean = parsedClean.replaceAll(/'/g, "&quot;")
-    parsedClean = parsedClean.replaceAll(/"/g, "&quot;")
-    parsedClean = parsedClean.replaceAll(/´/g, "&quot;")
-
-    switch (true) {
-    case str.match(CODE_BLOCK.TYPES.javascript) !== null:
-        return javascriptParser(parsedClean)
-    case str.match(CODE_BLOCK.TYPES.json) !== null:
-        return jsonParser(parsedClean)
-    case str.match(CODE_BLOCK.TYPES.console) !== null:
-        return consoleParser(parsedClean)
-    case str.match(CODE_BLOCK.TYPES.html) !== null:
-        return htmlParser(parsedClean)
-    default:
-        return parsedClean
-    }
+   return parsedClean.split("\n")
+      .map(s => {
+         const keywords = /(\s*)(console\.log|console\.error|return|function|import|var|const)(\s+)/g
+         const match = s.match(keywords)
+         let final = s
+         if (match)
+            match.forEach(m => {
+               final = final.replace(m, `<span class="${styles.keyword}">${m}</span>`)
+            })
+         return final
+      })
 }
 
-export default function parseCode(block, index, id) {
-    let buttonID = undefined
-    let parsed = block.content
-    const m = block.content.match(CODE_BLOCK.NOT_GLOBAL)
+export default function parseCode(block) {
 
-    if (m !== null) {
-        let parsedBlock = identifyType(block.content, m[4].replace(/(\n|\r\n)/, ""))
+   let parsed = block.content
+   const m = block.content.match(CODE_BLOCK.NOT_GLOBAL)
 
-        parsedBlock = parsedBlock.split("\n")
+   if (m !== null) {
+      const parsedBlock = identifyType(block.content, m[4].replace(/(\n|\r\n)/, "\n"))
+         .map((p, i, self) => {
+            return `<button data-index="${i}" data-variant="code" class="${styles.lineEnumeration}">${"&nbsp".repeat(Math.ceil(self.length * .1) + 2)}<span style="user-select: text">${p}</span></button>`
+         }).join("\n")
+      parsed = `<section style="position: relative; width: 100%"><pre class="${styles.code}">${parsedBlock}</pre></section>`
+   }
 
-        parsedBlock = parsedBlock.map((p, i) => {
-            return `<button data-index="${i}" data-variant="code" class="${styles.lineEnumeration}">${"&nbsp".repeat(Math.ceil(parsedBlock.length * .1))}<span style="user-select: text">${p}</span></button>`
-        })
-
-
-        buttonID = id + "-button-" + index
-
-        parsed = `<section style="position: relative; width: 100%"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/><button id="${id + "-button-" + index}" class="${styles.copyButton}"><span data-icon="true">copy</span></button><pre class="${styles.code}">${parsedBlock.join("\n")}</pre></section>`
-    }
-
-    return [parsed, buttonID]
+   return parsed
 }

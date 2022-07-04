@@ -21,41 +21,18 @@ export function newFindLists(str) {
     const split = str.split('\n')
 
     let lists = []
-    let currentType, currentList = [], startedOn
+
     split.forEach((s, i) => {
         const type = getType(s)
-        const isChild = ((currentType === type && currentType === 'number') || (currentType !== 'number' && type !== 'number'))
 
-        if ((type !== null && isChild) || (type !== null && currentType === undefined)) {
-            if (startedOn === undefined) {
-                startedOn = i
-                currentList.push(s)
-                currentType = type
-            } else
-                currentList.push(s)
-        } else {
-            if (currentList.length > 0)
-                lists.push({
-                    starts: startedOn,
-                    content: currentList.join('\n'),
-                    length: currentList.length,
-                    ends: startedOn + currentList.length
-                })
-
-            currentList = []
-            currentType = undefined
-            startedOn = undefined
+        if (type) {
+           lists.push({
+              starts: i,
+              content: s,
+              length: 1,
+              ends: i + 1
+           })
         }
     })
-    if (currentList.length > 0) {
-        lists.push({
-            starts: startedOn,
-            content: currentList.join('\n'),
-            length: currentList.length,
-            ends: startedOn + currentList.length
-        })
-    }
-
-
     return lists
 }

@@ -13,16 +13,17 @@ export function findTypeface(dataBlock) {
             // BOLD
             const asterisk = str.match(BOLD_REGEX.BASE_ASTERISK)
             const underline = str.match(BOLD_REGEX.BASE_UNDERLINE)
+
             if (asterisk !== null)
                 asterisk.forEach(i => {
                     const matched = i.match(BOLD_REGEX.ASTERISK)
                     str = str.replace(matched[0], `<b>${matched[1]}</b>`)
                 })
             if (underline !== null) {
-               console.log(underline)
                underline.forEach(i => {
                   const matched = i.match(BOLD_REGEX.UNDERLINE)
-                  str = str.replace(matched[0], `<b>${matched[1]}</b>`)
+                  console.log(matched, matched[1])
+                  str = str.replace("__", `<b>`).replace("__", `</b>`)
                })
             }
             // BOLD
@@ -63,7 +64,7 @@ export function findTypeface(dataBlock) {
             parsedLines.push(str)
             // INLINE-CODE
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
     })
 

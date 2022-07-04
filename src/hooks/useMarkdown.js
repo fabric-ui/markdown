@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useRef, useState} from "react"
-import useCopyToClipboard from "./useCopyToClipboard"
+import React, {useEffect, useMemo, useRef} from "react"
+
 import markdownParser from "../utils/markdown"
 import styles from "../styles/Markdown.module.css"
 
@@ -15,60 +15,20 @@ export default function useMarkdown(markdownData) {
       return result;
    }, [])
 
-   const [copyTo, setCopyTo] = useState([])
-
-   const copyToClipboard = useCopyToClipboard()
    const data = useMemo(() => {
       if (markdownData !== undefined && markdownData !== null) {
-         const [htmlData, ids, metadata] = new markdownParser(markdownData, id)
-         setCopyTo(ids)
-
+         const [htmlData, metadata] = new markdownParser(markdownData, id)
          return {htmlData, metadata}
       } else
          return {htmlData: null, metadata: []}
    }, [markdownData, id])
 
-   const handleClick = (event) => {
-      const el = event.currentTarget.firstChild
-      const success = copyToClipboard(event.currentTarget.parentNode.childNodes[2].textContent)
-      if (success) {
-         if (el) {
-            el.innerText = 'check'
-            el.parentNode.classList.add(styles.successButton)
-         }
-         setTimeout(() => {
-            if (el) {
-               el.parentNode.classList.remove(styles.successButton)
-               el.innerText = 'copy'
-            }
-
-         }, 1750)
-      }
-   }
-
-   useEffect(() => {
-
-      copyTo?.forEach(element => {
-         const ref = document.getElementById(element)
-
-         if (ref)
-            ref.addEventListener('click', handleClick)
-      })
-      return () => {
-         copyTo?.forEach(element => {
-            const ref = document.getElementById(element)
-            if (ref)
-               ref.removeEventListener('click', handleClick)
-         })
-      }
-   }, [copyTo])
    const ref = useRef()
    const removeEmpty = (el) => {
       Array.from(el.children).forEach(e => {
-         if (Array.from(e.children).length === 0 && (!e.innerText || e.innerText.trim().length === 0) && e.nodeName !== '#text' && e.nodeName !== 'IMG' && !e.classList.contains(styles.divider)) {
+         if (Array.from(e.children).length === 0 && (!e.innerText || e.innerText.trim().length === 0) && e.nodeName !== '#text' && e.nodeName !== 'IMG' && !e.classList.contains(styles.divider))
             el.removeChild(e)
-         } else {
-            console.log(e.getAttribute('dir'))
+         else {
             if (e.getAttribute('dir'))
                e.style.diplay = e.getAttribute('dir') === 'auto' ? 'flex' : undefined
             if (e.getAttribute('width'))
@@ -76,13 +36,20 @@ export default function useMarkdown(markdownData) {
             if (e.getAttribute('height'))
                e.style.height = e.getAttribute('height')
             removeEmpty(e)
-
-
          }
       })
    }
    useEffect(() => {
       removeEmpty(ref.current)
+      const tables = ref.current.getElementsByTagName("table")
+      const tableRows = ref.current.getElementsByTagName("tr")
+      const tableContent = [...Array.from(ref.current.getElementsByTagName("td")), ...Array.from(ref.current.getElementsByTagName("th"))]
+      for(let i =0; i < tables.length; i++)
+         tables[i].classList.add(styles.tableWrapper)
+      for(let i =0; i < tableRows.length; i++)
+         tableRows[i].classList.add(styles.tableRow)
+      for(let i =0; i < tableContent.length; i++)
+         tableContent[i].classList.add(styles.tableContent)
    }, [data.htmlData])
 
 
