@@ -4,10 +4,12 @@ import styles from "../styles/Markdown.module.css"
 
 export default function Markdown(props) {
     return (
-        <article className={styles.article} ref={props.hook.ref} dangerouslySetInnerHTML={{__html: props.hook.data}}/>
+        <article className={[styles.article, props.className].join(' ')} style={props.styles} ref={props.hook.ref} dangerouslySetInnerHTML={{__html: props.hook.data}}/>
     )
 }
 
 Markdown.propTypes = {
+   className: PropTypes.string,
+   styles: PropTypes.object,
     hook: PropTypes.object.isRequired
 }

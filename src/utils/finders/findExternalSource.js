@@ -16,7 +16,7 @@ export default function parseExternalSource(dataBlock) {
             const href = match[3]
             const src = match[2]
 
-            currentLine = currentLine.replace(EXTERNAL_SOURCE_REGEX.link, `<a class="${styles.link}" href="${href}"><img class="${styles.image}" src="${src}" alt="${alt}"/></a>`)
+            currentLine = currentLine.replace(EXTERNAL_SOURCE_REGEX.link, `<a  href="${href}"><img class="${styles.image}" src="${src}" alt="${alt}"/></a>`)
             match = currentLine.match(EXTERNAL_SOURCE_REGEX.linked_image)
         }
 
@@ -42,8 +42,8 @@ export default function parseExternalSource(dataBlock) {
             if (splitHref.length > 1)
                 title = splitHref.splice(1, 2).join(' ')
 
-            currentLine = currentLine.replace(`[${alt}](${href})`, `<a ${title !== undefined ? `title=${title}` : ''} class="${styles.link}"  href="${splitHref[0]}">${alt}</a>`)
-            // currentLine = findLink(currentLine)
+            currentLine = currentLine.replace(`[${alt}](${href})`, `<a  ${title !== undefined ? `title=${title}` : ''} href="${splitHref[0]}">${alt}</a>`)
+
 
             match = currentLine.match(EXTERNAL_SOURCE_REGEX.link)
         }
@@ -56,18 +56,6 @@ export default function parseExternalSource(dataBlock) {
 }
 
 
-export function findImage(line) {
-    let parsed = line
-    const match = line.match(EXTERNAL_SOURCE_REGEX.image)
-    if (match !== null) {
-        const alt = match[1]
-        const src = match[2]
-        parsed = parsed.replace(`![${alt}](${src})`, `<img class="${styles.image}" src="${src}" alt="${alt}"/>`)
-
-    }
-
-    return parsed
-}
 
 export function findLink(line) {
     let parsed = line
@@ -80,24 +68,11 @@ export function findLink(line) {
         if (splitHref.length > 1)
             title = splitHref.splice(1, 2).join(' ')
 
-        parsed = parsed.replace(`[${alt}](${href})`, `<a ${title !== undefined ? `title=${title}` : ''} class="${styles.link}"  href="${splitHref[0]}">${alt}</a>`)
+        parsed = parsed.replace(`[${alt}](${href})`, `<a ${title !== undefined ? `title=${title}` : ''}   href="${splitHref[0]}">${alt}</a>`)
 
         parsed = findLink(parsed)
     }
 
 
-    return parsed
-}
-
-export function findLinkedImage(line) {
-    let parsed = line
-    const match = line.match(EXTERNAL_SOURCE_REGEX.linked_image)
-    if (match !== null) {
-
-        const alt = match[1]
-        const href = match[3]
-        const src = match[2]
-        parsed = parsed.replace(EXTERNAL_SOURCE_REGEX.link, `<a class="${styles.link}" href="${href}"><img  src="${src}" alt="${alt}"/></a>`)
-    }
     return parsed
 }

@@ -8,9 +8,10 @@
 }
 
 .article {
-  display: grid;
   width: 100%;
 }
+
+
 
 .article > *:is(h1, h2, h3, h4, h5, h6) {
   white-space: normal !important;
@@ -32,8 +33,6 @@
     background: var(--fabric-background-tertiary);
    border: 1px solid black;
 
-   width: fit-content;
-   height: fit-content;
 
    border-collapse: collapse;
 }
@@ -56,13 +55,9 @@
 }
 
 .article > * {
-
   max-width: 100%;
   width: 100%;
   overflow-x: hidden;
-
-  /* margin: 0; */
-  white-space: pre-wrap;
 }
 
 .article > *[dir="auto"] {
@@ -116,18 +111,18 @@
   margin: 0 !important;
   height: fit-content;
 }
-
 .image {
   width: fit-content;
   height: fit-content;
 }
 
 .tableWrapper {
+   display: block;
+   width: max-content;
   border-collapse: collapse;
   max-width: 100%;
    height: fit-content;
-  overflow-x: hidden;
-   width: fit-content;
+  overflow: auto;
 }
 
 .tableRow:nth-child(even) {
@@ -181,11 +176,11 @@
 
 .link {
   text-decoration: none;
-  color: #0095ff;
+  color: var(--fabric-accent-color);
   font-weight: bold;
 }
 
-.link:hover {
+.link:active {
   text-decoration: underline;
 }
 

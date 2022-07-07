@@ -41,6 +41,7 @@ export default function useMarkdown(markdownData) {
    }
    useEffect(() => {
       removeEmpty(ref.current)
+      const links = ref.current.getElementsByTagName("a")
       const tables = ref.current.getElementsByTagName("table")
       const tableRows = ref.current.getElementsByTagName("tr")
       const tableContent = [...Array.from(ref.current.getElementsByTagName("td")), ...Array.from(ref.current.getElementsByTagName("th"))]
@@ -50,6 +51,8 @@ export default function useMarkdown(markdownData) {
          tableRows[i].classList.add(styles.tableRow)
       for(let i =0; i < tableContent.length; i++)
          tableContent[i].classList.add(styles.tableContent)
+      for(let i =0; i < links.length; i++)
+         links[i].classList.add(styles.link)
    }, [data.htmlData])
 
 

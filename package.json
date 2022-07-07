@@ -1,6 +1,6 @@
 {
   "name": "@f-ui/markdown",
-  "version": "0.2.1-alpha",
+  "version": "0.2.11-alpha",
   "author": "facobackup",
   "license": "MIT",
   "main": "dist/index.js",
